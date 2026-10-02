@@ -1,0 +1,12 @@
+/**
+ * Server-safe helpers (no "use client"), for Next.js server components, route handlers,
+ * React Router loaders and plain Node.
+ */
+export {
+  type ConsentModeDefaultOptions,
+  type ConsentState,
+  getConsentModeDefaultScript,
+  isConsentState,
+  parseConsentState,
+  readConsentFromCookieHeader,
+} from "@permito/core";
