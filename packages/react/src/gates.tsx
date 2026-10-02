@@ -2,6 +2,7 @@ import { format, type LoadScriptOptions, loadScript } from "@permito/core";
 import { type IframeHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useIsAllowed } from "./hooks";
+import { Portal } from "./portal";
 import { cx } from "./utils";
 
 /** Exactly one of `category` or `service` decides whether the content is allowed. */
@@ -140,6 +141,8 @@ export interface PreferencesButtonProps {
   position?: "bottom-left" | "bottom-right";
   className?: string;
   unstyled?: boolean;
+  /** Render into `document.body`. Defaults to `true`. */
+  portal?: boolean;
 }
 
 /** Small floating button to reopen the preference center after a decision. */
@@ -147,25 +150,28 @@ export function PreferencesButton({
   position = "bottom-left",
   className,
   unstyled = false,
+  portal = true,
 }: PreferencesButtonProps) {
   const { snapshot, t, preferencesOpen, openPreferences } = usePermitoContext();
   if (!snapshot.ready || snapshot.needsConsent || preferencesOpen) return null;
   const c = (name: string) => (unstyled ? undefined : name);
   return (
-    <button
-      type="button"
-      className={cx(c("pmt-root pmt-fab"), c(`pmt-fab--${position}`), className)}
-      onClick={openPreferences}
-      aria-label={t.openPreferences}
-      title={t.openPreferences}
-      data-permito="preferences-button"
-    >
-      <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
-        <path
-          fill="currentColor"
-          d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5Zm-4.5 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-1-8a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm6 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"
-        />
-      </svg>
-    </button>
+    <Portal enabled={portal}>
+      <button
+        type="button"
+        className={cx(c("pmt-root pmt-fab"), c(`pmt-fab--${position}`), className)}
+        onClick={openPreferences}
+        aria-label={t.openPreferences}
+        title={t.openPreferences}
+        data-permito="preferences-button"
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">
+          <path
+            fill="currentColor"
+            d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5Zm-4.5 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm4 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3Zm-1-8a1 1 0 1 1 0 2 1 1 0 0 1 0-2Zm6 8a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"
+          />
+        </svg>
+      </button>
+    </Portal>
   );
 }

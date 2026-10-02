@@ -147,6 +147,12 @@ The default cookie `permito_consent` uses `SameSite=Lax`, `Secure` on https, `Pa
 
 Import `@permito/react/styles.css` and override CSS variables (`--pmt-accent`, `--pmt-bg`, `--pmt-fg`, `--pmt-radius`, `--pmt-font`, …). Dark mode follows `prefers-color-scheme`, or force it with `data-pmt-theme="dark"`. Every component accepts `className` and `unstyled` for fully custom styling.
 
+## Documentation
+
+The docs site lives in [`apps/docs`](apps/docs) (Astro Starlight, with a live demo). Run it with `pnpm --filter docs dev`.
+
+Examples: [`examples/nextjs`](examples/nextjs) (App Router, Playwright tests) and [`examples/vite`](examples/vite) (client-only React).
+
 ## Development
 
 ```bash

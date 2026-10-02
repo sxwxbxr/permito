@@ -1,0 +1,37 @@
+---
+title: Theming
+description: Adapt the look with CSS variables, classes or fully headless.
+---
+
+Import the default theme once:
+
+```ts
+import "@permito/react/styles.css";
+```
+
+## CSS variables
+
+```css
+.pmt-root {
+  --pmt-accent: #0f766e;
+  --pmt-accent-fg: #ffffff;
+  --pmt-radius: 4px;
+  --pmt-font: "Inter", system-ui, sans-serif;
+}
+```
+
+| Variable | Purpose |
+|---|---|
+| `--pmt-bg`, `--pmt-fg`, `--pmt-muted` | Background, text, secondary text |
+| `--pmt-accent`, `--pmt-accent-fg` | Buttons and switches |
+| `--pmt-border`, `--pmt-surface` | Borders and nested surfaces |
+| `--pmt-focus` | Focus ring |
+| `--pmt-radius`, `--pmt-shadow`, `--pmt-font`, `--pmt-z`, `--pmt-max-width` | Shape, depth, typography, stacking, width |
+
+Dark mode follows `prefers-color-scheme`. Force a theme with `data-pmt-theme="dark"` or `"light"` on a parent.
+
+Keep "Accept all" and "Reject all" visually equal when you restyle them. Both use the class `pmt-btn--choice`.
+
+## Fully custom
+
+Every component accepts `className` and `unstyled`. For a completely own UI, use the hooks (`useConsent`) and render your own markup.

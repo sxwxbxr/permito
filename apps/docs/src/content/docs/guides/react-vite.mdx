@@ -1,0 +1,40 @@
+---
+title: React with Vite
+description: Use Permito in a client-rendered React app.
+---
+
+In a client-only app there is no server rendering, so you do not need `initialState`. The decision is read synchronously from the cookie when the provider mounts.
+
+```tsx title="src/main.tsx"
+import "@permito/react/styles.css";
+import {
+  ConsentBanner,
+  PermitoProvider,
+  PreferenceCenter,
+  PreferencesButton,
+} from "@permito/react";
+import { createRoot } from "react-dom/client";
+import { App } from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <PermitoProvider
+    config={{
+      consentVersion: "2026-10",
+      language: "de-CH",
+      categories: [{ id: "necessary", required: true }, { id: "statistics" }, { id: "marketing" }],
+    }}
+    privacyPolicyUrl="/datenschutz"
+    googleConsentMode
+    blockedElements
+  >
+    <App />
+    <ConsentBanner position="bottom-right" />
+    <PreferenceCenter />
+    <PreferencesButton />
+  </PermitoProvider>,
+);
+```
+
+For Google Consent Mode, put the default snippet into `index.html` before any Google tag. See [Google Consent Mode](/guides/google-consent-mode/).
+
+A complete example lives in [`examples/vite`](https://github.com/sxwxbxr/permito/tree/main/examples/vite).

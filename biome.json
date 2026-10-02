@@ -9,7 +9,8 @@
       "!**/.next",
       "!**/next-env.d.ts",
       "!**/test-results",
-      "!**/playwright-report"
+      "!**/playwright-report",
+      "!**/.astro"
     ]
   },
   "formatter": {

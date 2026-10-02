@@ -92,6 +92,17 @@ describe("ConsentBanner", () => {
     expect(screen.getByText("Statistik aus")).toBeTruthy();
   });
 
+  it("renders into document.body so transformed ancestors cannot clip it", () => {
+    render(
+      <div style={{ transform: "translateZ(0)" }} data-testid="wrapper">
+        <App />
+      </div>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(screen.getByTestId("wrapper").contains(banner)).toBe(false);
+    expect(banner.parentElement).toBe(document.body);
+  });
+
   it("accepts all", async () => {
     const user = userEvent.setup();
     render(<App />);
@@ -142,8 +153,8 @@ describe("ConsentBanner", () => {
   });
 
   it("has no axe violations", async () => {
-    const { container } = render(<App />);
-    expect(await runAxe(container)).toEqual([]);
+    render(<App />);
+    expect(await runAxe(document.body)).toEqual([]);
   });
 });
 
@@ -216,9 +227,9 @@ describe("PreferenceCenter", () => {
 
   it("has no axe violations", async () => {
     const user = userEvent.setup();
-    const { container } = render(<App />);
+    render(<App />);
     await user.click(screen.getByRole("button", { name: "Einstellungen" }));
-    expect(await runAxe(container)).toEqual([]);
+    expect(await runAxe(document.body)).toEqual([]);
   });
 });
 
