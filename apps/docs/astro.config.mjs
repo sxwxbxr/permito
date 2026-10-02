@@ -3,7 +3,7 @@ import starlight from "@astrojs/starlight";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
-  site: "https://permito.dev",
+  site: "https://permito.sweber.dev",
   integrations: [
     starlight({
       title: "Permito",

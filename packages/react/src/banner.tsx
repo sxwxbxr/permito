@@ -1,6 +1,6 @@
 import { type ReactNode, useEffect, useId, useRef } from "react";
 import { usePermitoContext } from "./context";
-import { Portal } from "./portal";
+import { Portal, type PortalTarget } from "./portal";
 import { cx } from "./utils";
 
 export type BannerPosition = "bottom" | "top" | "bottom-left" | "bottom-right" | "center";
@@ -18,8 +18,11 @@ export interface ConsentBannerProps {
   unstyled?: boolean;
   /** Extra content between the description and the buttons. */
   children?: ReactNode;
-  /** Render into `document.body`. Defaults to `true`. */
-  portal?: boolean;
+  /**
+   * `true` (default) renders into the provider's `portalContainer` or `document.body`,
+   * an element renders into that element, `false` renders in place.
+   */
+  portal?: PortalTarget;
 }
 
 /**
@@ -53,7 +56,7 @@ export function ConsentBanner({
   const c = (name: string) => (unstyled ? undefined : name);
 
   return (
-    <Portal enabled={portal}>
+    <Portal target={portal}>
       <div
         ref={ref}
         role="dialog"
@@ -62,6 +65,7 @@ export function ConsentBanner({
         aria-describedby={descriptionId}
         tabIndex={-1}
         className={cx(c("pmt-root pmt-banner"), c(`pmt-banner--${position}`), className)}
+        data-pmt-theme={context.theme}
         data-permito="banner"
       >
         <div className={c("pmt-banner__body")}>

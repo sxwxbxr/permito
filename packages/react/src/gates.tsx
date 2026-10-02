@@ -2,7 +2,7 @@ import { format, type LoadScriptOptions, loadScript } from "@permito/core";
 import { type IframeHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useIsAllowed } from "./hooks";
-import { Portal } from "./portal";
+import { Portal, type PortalTarget } from "./portal";
 import { cx } from "./utils";
 
 /** Exactly one of `category` or `service` decides whether the content is allowed. */
@@ -88,7 +88,7 @@ export function ConsentIframe({
   unstyled = false,
   ...iframeProps
 }: ConsentIframeProps) {
-  const { manager, config, t } = usePermitoContext();
+  const { manager, config, t, theme } = usePermitoContext();
   const allowed = useIsAllowed(service ? { service } : { category: category as string });
   const [loadOnce, setLoadOnce] = useState(false);
   const c = (name: string) => (unstyled ? undefined : name);
@@ -110,6 +110,7 @@ export function ConsentIframe({
   return (
     <div
       className={cx(c("pmt-root pmt-embed"), placeholderClassName)}
+      data-pmt-theme={theme}
       style={
         unstyled
           ? undefined
@@ -141,8 +142,11 @@ export interface PreferencesButtonProps {
   position?: "bottom-left" | "bottom-right";
   className?: string;
   unstyled?: boolean;
-  /** Render into `document.body`. Defaults to `true`. */
-  portal?: boolean;
+  /**
+   * `true` (default) renders into the provider's `portalContainer` or `document.body`,
+   * an element renders into that element, `false` renders in place.
+   */
+  portal?: PortalTarget;
 }
 
 /** Small floating button to reopen the preference center after a decision. */
@@ -152,14 +156,15 @@ export function PreferencesButton({
   unstyled = false,
   portal = true,
 }: PreferencesButtonProps) {
-  const { snapshot, t, preferencesOpen, openPreferences } = usePermitoContext();
+  const { snapshot, t, theme, preferencesOpen, openPreferences } = usePermitoContext();
   if (!snapshot.ready || snapshot.needsConsent || preferencesOpen) return null;
   const c = (name: string) => (unstyled ? undefined : name);
   return (
-    <Portal enabled={portal}>
+    <Portal target={portal}>
       <button
         type="button"
         className={cx(c("pmt-root pmt-fab"), c(`pmt-fab--${position}`), className)}
+        data-pmt-theme={theme}
         onClick={openPreferences}
         aria-label={t.openPreferences}
         title={t.openPreferences}

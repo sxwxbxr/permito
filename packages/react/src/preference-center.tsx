@@ -2,7 +2,7 @@ import { type ConsentService, localize } from "@permito/core";
 import { useCallback, useId, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useModalFocus } from "./focus";
-import { Portal } from "./portal";
+import { Portal, type PortalTarget } from "./portal";
 import { cx } from "./utils";
 
 export interface PreferenceCenterProps {
@@ -10,8 +10,11 @@ export interface PreferenceCenterProps {
   unstyled?: boolean;
   /** Show per-service switches inside each category. Defaults to `true`. */
   serviceToggles?: boolean;
-  /** Render into `document.body`. Defaults to `true`. */
-  portal?: boolean;
+  /**
+   * `true` (default) renders into the provider's `portalContainer` or `document.body`,
+   * an element renders into that element, `false` renders in place.
+   */
+  portal?: PortalTarget;
 }
 
 interface Draft {
@@ -35,7 +38,7 @@ function PreferenceDialog({
   serviceToggles = true,
   portal = true,
 }: PreferenceCenterProps) {
-  const { manager, snapshot, config, t, language, closePreferences, privacyPolicyUrl } =
+  const { manager, snapshot, config, t, language, closePreferences, privacyPolicyUrl, theme } =
     usePermitoContext();
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -79,8 +82,8 @@ function PreferenceDialog({
     (draft.services[service.id] ?? draft.categories[service.category] === true);
 
   return (
-    <Portal enabled={portal}>
-      <div className={c("pmt-root pmt-overlay")} data-permito="overlay">
+    <Portal target={portal}>
+      <div className={c("pmt-root pmt-overlay")} data-permito="overlay" data-pmt-theme={theme}>
         <div
           ref={ref}
           role="dialog"

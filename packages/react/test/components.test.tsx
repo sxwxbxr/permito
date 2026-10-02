@@ -103,6 +103,34 @@ describe("ConsentBanner", () => {
     expect(banner.parentElement).toBe(document.body);
   });
 
+  it("renders into a custom portal container and applies the provider theme", () => {
+    const container = document.createElement("div");
+    container.className = "tenant-a";
+    document.body.appendChild(container);
+    render(
+      <PermitoProvider config={config()} theme="dark" portalContainer={container}>
+        <ConsentBanner />
+      </PermitoProvider>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(banner.parentElement).toBe(container);
+    expect(banner.getAttribute("data-pmt-theme")).toBe("dark");
+    container.remove();
+  });
+
+  it("can render in place", () => {
+    render(
+      <PermitoProvider config={config()}>
+        <div data-testid="wrapper">
+          <ConsentBanner portal={false} />
+        </div>
+      </PermitoProvider>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(screen.getByTestId("wrapper").contains(banner)).toBe(true);
+    expect(banner.hasAttribute("data-pmt-theme")).toBe(false);
+  });
+
   it("accepts all", async () => {
     const user = userEvent.setup();
     render(<App />);

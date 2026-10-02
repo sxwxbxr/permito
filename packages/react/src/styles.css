@@ -1,8 +1,13 @@
 /*
- * Permito default theme. Override any variable on :root or on .pmt-root.
+ * Permito default theme.
+ *
+ * Variables are defined with zero specificity on :root and inherited, so you can override
+ * them on :root, on any ancestor, or on .pmt-root. Force a theme with data-pmt-theme="light"
+ * or "dark" on <html>, on any ancestor, or via <PermitoProvider theme="dark">.
  * Contrast of the defaults meets WCAG 2.2 AA in light and dark mode.
  */
-.pmt-root {
+:where(:root),
+:where([data-pmt-theme="light"]) {
   --pmt-font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --pmt-bg: #ffffff;
   --pmt-fg: #1a1a1a;
@@ -16,22 +21,10 @@
   --pmt-shadow: 0 10px 30px rgb(0 0 0 / 0.18);
   --pmt-z: 2147483000;
   --pmt-max-width: 960px;
-
-  box-sizing: border-box;
-  font-family: var(--pmt-font);
-  font-size: 15px;
-  line-height: 1.5;
-  color: var(--pmt-fg);
-}
-
-.pmt-root *,
-.pmt-root *::before,
-.pmt-root *::after {
-  box-sizing: inherit;
 }
 
 @media (prefers-color-scheme: dark) {
-  .pmt-root:not([data-pmt-theme="light"]) {
+  :where(:root:not([data-pmt-theme="light"])) {
     --pmt-bg: #1c1c1e;
     --pmt-fg: #f2f2f2;
     --pmt-muted: #b8b8b8;
@@ -43,7 +36,7 @@
   }
 }
 
-.pmt-root[data-pmt-theme="dark"] {
+:where([data-pmt-theme="dark"]) {
   --pmt-bg: #1c1c1e;
   --pmt-fg: #f2f2f2;
   --pmt-muted: #b8b8b8;
@@ -52,6 +45,20 @@
   --pmt-accent: #93b4ff;
   --pmt-accent-fg: #0b1020;
   --pmt-focus: #93b4ff;
+}
+
+.pmt-root {
+  box-sizing: border-box;
+  font-family: var(--pmt-font);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--pmt-fg);
+}
+
+.pmt-root *,
+.pmt-root *::before,
+.pmt-root *::after {
+  box-sizing: inherit;
 }
 
 /* Banner */
