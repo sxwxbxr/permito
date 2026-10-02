@@ -31,10 +31,14 @@ export interface PermitoContextValue {
   t: Translations;
   privacyPolicyUrl: string | undefined;
   imprintUrl: string | undefined;
+  theme: PermitoTheme | undefined;
+  portalContainer: Element | undefined;
   preferencesOpen: boolean;
   openPreferences: () => void;
   closePreferences: () => void;
 }
+
+export type PermitoTheme = "light" | "dark";
 
 const PermitoContext = createContext<PermitoContextValue | null>(null);
 
@@ -45,6 +49,13 @@ export interface PermitoProviderProps {
   translations?: TranslationOverrides;
   privacyPolicyUrl?: string;
   imprintUrl?: string;
+  /** Force light or dark styling for all Permito UI. Default: follow the page and `prefers-color-scheme`. */
+  theme?: PermitoTheme;
+  /**
+   * Where banner, preference center and preferences button are portaled to. Default `document.body`.
+   * Use an element inside your themed wrapper to keep scoped styles.
+   */
+  portalContainer?: Element;
   /** Send Google Consent Mode v2 updates. Render the default snippet in `<head>` yourself. */
   googleConsentMode?: boolean | ConnectConsentModeOptions;
   /** Activate `<script type="text/plain" data-consent-…>` markup after consent. */
@@ -62,6 +73,8 @@ export function PermitoProvider({
   translations,
   privacyPolicyUrl,
   imprintUrl,
+  theme,
+  portalContainer,
   googleConsentMode,
   blockedElements,
   children,
@@ -118,6 +131,8 @@ export function PermitoProvider({
       t,
       privacyPolicyUrl,
       imprintUrl,
+      theme,
+      portalContainer,
       preferencesOpen,
       openPreferences,
       closePreferences,
@@ -129,6 +144,8 @@ export function PermitoProvider({
       t,
       privacyPolicyUrl,
       imprintUrl,
+      theme,
+      portalContainer,
       preferencesOpen,
       openPreferences,
       closePreferences,

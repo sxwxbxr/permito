@@ -92,6 +92,45 @@ describe("ConsentBanner", () => {
     expect(screen.getByText("Statistik aus")).toBeTruthy();
   });
 
+  it("renders into document.body so transformed ancestors cannot clip it", () => {
+    render(
+      <div style={{ transform: "translateZ(0)" }} data-testid="wrapper">
+        <App />
+      </div>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(screen.getByTestId("wrapper").contains(banner)).toBe(false);
+    expect(banner.parentElement).toBe(document.body);
+  });
+
+  it("renders into a custom portal container and applies the provider theme", () => {
+    const container = document.createElement("div");
+    container.className = "tenant-a";
+    document.body.appendChild(container);
+    render(
+      <PermitoProvider config={config()} theme="dark" portalContainer={container}>
+        <ConsentBanner />
+      </PermitoProvider>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(banner.parentElement).toBe(container);
+    expect(banner.getAttribute("data-pmt-theme")).toBe("dark");
+    container.remove();
+  });
+
+  it("can render in place", () => {
+    render(
+      <PermitoProvider config={config()}>
+        <div data-testid="wrapper">
+          <ConsentBanner portal={false} />
+        </div>
+      </PermitoProvider>,
+    );
+    const banner = screen.getByRole("dialog", { name: "Ihre Privatsphäre" });
+    expect(screen.getByTestId("wrapper").contains(banner)).toBe(true);
+    expect(banner.hasAttribute("data-pmt-theme")).toBe(false);
+  });
+
   it("accepts all", async () => {
     const user = userEvent.setup();
     render(<App />);
@@ -142,8 +181,8 @@ describe("ConsentBanner", () => {
   });
 
   it("has no axe violations", async () => {
-    const { container } = render(<App />);
-    expect(await runAxe(container)).toEqual([]);
+    render(<App />);
+    expect(await runAxe(document.body)).toEqual([]);
   });
 });
 
@@ -216,9 +255,9 @@ describe("PreferenceCenter", () => {
 
   it("has no axe violations", async () => {
     const user = userEvent.setup();
-    const { container } = render(<App />);
+    render(<App />);
     await user.click(screen.getByRole("button", { name: "Einstellungen" }));
-    expect(await runAxe(container)).toEqual([]);
+    expect(await runAxe(document.body)).toEqual([]);
   });
 });
 

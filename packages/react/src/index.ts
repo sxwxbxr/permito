@@ -14,6 +14,7 @@ export {
   type PermitoContextValue,
   PermitoProvider,
   type PermitoProviderProps,
+  type PermitoTheme,
   usePermitoContext,
 } from "./context";
 export {
@@ -35,4 +36,5 @@ export {
   useIsAllowed,
   usePermitoTranslations,
 } from "./hooks";
+export type { PortalTarget } from "./portal";
 export { PreferenceCenter, type PreferenceCenterProps } from "./preference-center";

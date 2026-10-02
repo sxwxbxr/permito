@@ -1,0 +1,34 @@
+---
+title: Introduction
+description: What Permito is, what it is not, and how it is structured.
+---
+
+Permito is a consent toolkit for websites built with React. It shows a banner, lets visitors choose categories and individual services, stores that decision, and makes sure third-party code only runs once it is allowed.
+
+## Packages
+
+| Package | Use it for |
+|---|---|
+| `@permito/react` | React and Next.js apps. Includes everything from the core. |
+| `@permito/core` | Any other stack, or your own UI. Framework-agnostic, no dependencies. |
+
+## Principles
+
+- **Opt-in by default.** Only categories you mark as `required` are active before a decision. Opt-out exists, but only if you configure it.
+- **Equal choices.** "Accept all" and "Reject all" are always shown together and styled identically.
+- **Data minimisation.** The stored decision contains categories, services, versions, a timestamp and the source of the decision. No IP address, no user agent, no identifier.
+- **No external communication.** The open-source packages never call a server.
+- **Accessibility.** Keyboard operable, focus management, labelled controls, `prefers-reduced-motion` and dark mode support, tested with axe-core.
+
+## What Permito is not
+
+Permito is technical infrastructure, **not legal advice**. It does not tell you which services need consent, it does not scan your site and it cannot guarantee compliance with the GDPR, the Swiss revDSG or any other law. See [Legal notes](/legal/).
+
+## Installation
+
+```bash
+pnpm add @permito/react
+# or: npm install @permito/react
+```
+
+Continue with the guide for your stack: [Next.js](/guides/nextjs/), [React with Vite](/guides/react-vite/) or [without React](/guides/vanilla/).

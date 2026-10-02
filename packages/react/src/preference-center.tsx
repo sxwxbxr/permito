@@ -2,6 +2,7 @@ import { type ConsentService, localize } from "@permito/core";
 import { useCallback, useId, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useModalFocus } from "./focus";
+import { Portal, type PortalTarget } from "./portal";
 import { cx } from "./utils";
 
 export interface PreferenceCenterProps {
@@ -9,6 +10,11 @@ export interface PreferenceCenterProps {
   unstyled?: boolean;
   /** Show per-service switches inside each category. Defaults to `true`. */
   serviceToggles?: boolean;
+  /**
+   * `true` (default) renders into the provider's `portalContainer` or `document.body`,
+   * an element renders into that element, `false` renders in place.
+   */
+  portal?: PortalTarget;
 }
 
 interface Draft {
@@ -30,8 +36,9 @@ function PreferenceDialog({
   className,
   unstyled = false,
   serviceToggles = true,
+  portal = true,
 }: PreferenceCenterProps) {
-  const { manager, snapshot, config, t, language, closePreferences, privacyPolicyUrl } =
+  const { manager, snapshot, config, t, language, closePreferences, privacyPolicyUrl, theme } =
     usePermitoContext();
   const ref = useRef<HTMLDivElement>(null);
   const titleId = useId();
@@ -75,142 +82,144 @@ function PreferenceDialog({
     (draft.services[service.id] ?? draft.categories[service.category] === true);
 
   return (
-    <div className={c("pmt-root pmt-overlay")} data-permito="overlay">
-      <div
-        ref={ref}
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
-        tabIndex={-1}
-        className={cx(c("pmt-dialog"), className)}
-        data-permito="preferences"
-      >
-        <div className={c("pmt-dialog__header")}>
-          <h2 id={titleId} className={c("pmt-title")}>
-            {t.preferencesTitle}
-          </h2>
-          <button type="button" className={c("pmt-close")} onClick={close} aria-label={t.close}>
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div className={c("pmt-dialog__content")}>
-          <p id={descriptionId} className={c("pmt-text")}>
-            {t.preferencesDescription}
-            {privacyPolicyUrl ? (
-              <>
-                {" "}
-                <a className={c("pmt-link")} href={privacyPolicyUrl}>
-                  {t.privacyPolicy}
-                </a>
-              </>
-            ) : null}
-          </p>
-          <ul className={c("pmt-categories")}>
-            {config.categories.map((category) => {
-              const builtIn = t.categories[category.id];
-              const name = localize(category.name, language) || builtIn?.name || category.id;
-              const description =
-                localize(category.description, language) || builtIn?.description || "";
-              const inputId = `${baseId}-${category.id}`;
-              const categoryServices = services.filter((s) => s.category === category.id);
-              return (
-                <li key={category.id} className={c("pmt-category")}>
-                  <div className={c("pmt-category__header")}>
-                    <label htmlFor={inputId} className={c("pmt-category__name")}>
-                      {name}
-                    </label>
-                    {category.required ? (
-                      <span className={c("pmt-badge")}>
+    <Portal target={portal}>
+      <div className={c("pmt-root pmt-overlay")} data-permito="overlay" data-pmt-theme={theme}>
+        <div
+          ref={ref}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby={titleId}
+          aria-describedby={descriptionId}
+          tabIndex={-1}
+          className={cx(c("pmt-dialog"), className)}
+          data-permito="preferences"
+        >
+          <div className={c("pmt-dialog__header")}>
+            <h2 id={titleId} className={c("pmt-title")}>
+              {t.preferencesTitle}
+            </h2>
+            <button type="button" className={c("pmt-close")} onClick={close} aria-label={t.close}>
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div className={c("pmt-dialog__content")}>
+            <p id={descriptionId} className={c("pmt-text")}>
+              {t.preferencesDescription}
+              {privacyPolicyUrl ? (
+                <>
+                  {" "}
+                  <a className={c("pmt-link")} href={privacyPolicyUrl}>
+                    {t.privacyPolicy}
+                  </a>
+                </>
+              ) : null}
+            </p>
+            <ul className={c("pmt-categories")}>
+              {config.categories.map((category) => {
+                const builtIn = t.categories[category.id];
+                const name = localize(category.name, language) || builtIn?.name || category.id;
+                const description =
+                  localize(category.description, language) || builtIn?.description || "";
+                const inputId = `${baseId}-${category.id}`;
+                const categoryServices = services.filter((s) => s.category === category.id);
+                return (
+                  <li key={category.id} className={c("pmt-category")}>
+                    <div className={c("pmt-category__header")}>
+                      <label htmlFor={inputId} className={c("pmt-category__name")}>
+                        {name}
+                      </label>
+                      {category.required ? (
+                        <span className={c("pmt-badge")}>
+                          <input
+                            id={inputId}
+                            type="checkbox"
+                            role="switch"
+                            checked
+                            aria-checked="true"
+                            disabled
+                            aria-describedby={`${inputId}-desc`}
+                            className={c("pmt-switch")}
+                          />
+                          <span>{t.alwaysActive}</span>
+                        </span>
+                      ) : (
                         <input
                           id={inputId}
                           type="checkbox"
                           role="switch"
-                          checked
-                          aria-checked="true"
-                          disabled
+                          checked={draft.categories[category.id] === true}
+                          aria-checked={draft.categories[category.id] === true}
+                          onChange={(event) => toggleCategory(category.id, event.target.checked)}
                           aria-describedby={`${inputId}-desc`}
                           className={c("pmt-switch")}
                         />
-                        <span>{t.alwaysActive}</span>
-                      </span>
-                    ) : (
-                      <input
-                        id={inputId}
-                        type="checkbox"
-                        role="switch"
-                        checked={draft.categories[category.id] === true}
-                        aria-checked={draft.categories[category.id] === true}
-                        onChange={(event) => toggleCategory(category.id, event.target.checked)}
-                        aria-describedby={`${inputId}-desc`}
-                        className={c("pmt-switch")}
-                      />
-                    )}
-                  </div>
-                  <p id={`${inputId}-desc`} className={c("pmt-text pmt-text--small")}>
-                    {description}
-                  </p>
-                  {categoryServices.length > 0 ? (
-                    <details className={c("pmt-services")}>
-                      <summary>
-                        {t.services} ({categoryServices.length})
-                      </summary>
-                      <ul>
-                        {categoryServices.map((service) => (
-                          <ServiceItem
-                            key={service.id}
-                            service={service}
-                            inputId={`${baseId}-service-${service.id}`}
-                            checked={serviceValue(service)}
-                            disabled={
-                              category.required === true || service.requiresConsent === false
-                            }
-                            showToggle={serviceToggles}
-                            onChange={(value) => toggleService(service, value)}
-                            unstyled={unstyled}
-                          />
-                        ))}
-                      </ul>
-                    </details>
-                  ) : null}
-                </li>
-              );
-            })}
-          </ul>
+                      )}
+                    </div>
+                    <p id={`${inputId}-desc`} className={c("pmt-text pmt-text--small")}>
+                      {description}
+                    </p>
+                    {categoryServices.length > 0 ? (
+                      <details className={c("pmt-services")}>
+                        <summary>
+                          {t.services} ({categoryServices.length})
+                        </summary>
+                        <ul>
+                          {categoryServices.map((service) => (
+                            <ServiceItem
+                              key={service.id}
+                              service={service}
+                              inputId={`${baseId}-service-${service.id}`}
+                              checked={serviceValue(service)}
+                              disabled={
+                                category.required === true || service.requiresConsent === false
+                              }
+                              showToggle={serviceToggles}
+                              onChange={(value) => toggleService(service, value)}
+                              unstyled={unstyled}
+                            />
+                          ))}
+                        </ul>
+                      </details>
+                    ) : null}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className={c("pmt-actions")}>
+            <button
+              type="button"
+              className={c("pmt-btn pmt-btn--secondary")}
+              onClick={() =>
+                finish(() =>
+                  manager.update(draft.categories, {
+                    services: draft.services,
+                    source: "preferences",
+                  }),
+                )
+              }
+            >
+              {t.save}
+            </button>
+            <button
+              type="button"
+              className={c("pmt-btn pmt-btn--choice")}
+              onClick={() => finish(() => manager.rejectAll("preferences"))}
+            >
+              {t.rejectAll}
+            </button>
+            <button
+              type="button"
+              className={c("pmt-btn pmt-btn--choice")}
+              onClick={() => finish(() => manager.acceptAll("preferences"))}
+            >
+              {t.acceptAll}
+            </button>
+          </div>
+          <p className={c("pmt-version")}>Version {config.consentVersion}</p>
         </div>
-        <div className={c("pmt-actions")}>
-          <button
-            type="button"
-            className={c("pmt-btn pmt-btn--secondary")}
-            onClick={() =>
-              finish(() =>
-                manager.update(draft.categories, {
-                  services: draft.services,
-                  source: "preferences",
-                }),
-              )
-            }
-          >
-            {t.save}
-          </button>
-          <button
-            type="button"
-            className={c("pmt-btn pmt-btn--choice")}
-            onClick={() => finish(() => manager.rejectAll("preferences"))}
-          >
-            {t.rejectAll}
-          </button>
-          <button
-            type="button"
-            className={c("pmt-btn pmt-btn--choice")}
-            onClick={() => finish(() => manager.acceptAll("preferences"))}
-          >
-            {t.acceptAll}
-          </button>
-        </div>
-        <p className={c("pmt-version")}>Version {config.consentVersion}</p>
       </div>
-    </div>
+    </Portal>
   );
 }
 

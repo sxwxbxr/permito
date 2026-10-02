@@ -1,0 +1,31 @@
+---
+title: Permito
+description: Privacy-first consent toolkit for React and Next.js.
+template: splash
+hero:
+  tagline: Accessible cookie banner, preference center and consent gates for React and Next.js. No network calls, no tracking, no dark patterns.
+  actions:
+    - text: Get started
+      link: /introduction/
+      icon: right-arrow
+    - text: Live demo
+      link: /demo/
+      variant: minimal
+---
+
+import { Card, CardGrid } from "@astrojs/starlight/components";
+
+<CardGrid stagger>
+  <Card title="Opt-in by default" icon="approve-check">
+    Optional categories are never pre-selected. "Reject all" is on the first layer with the same weight as "Accept all".
+  </Card>
+  <Card title="Nothing loads before consent" icon="seti:lock">
+    Scripts, iframes and components behind a gate are neither server-rendered nor injected until consent exists.
+  </Card>
+  <Card title="Built for Next.js" icon="rocket">
+    Server-safe helpers read the consent cookie during rendering, so allowed content appears without a flash or hydration error.
+  </Card>
+  <Card title="DACH-ready" icon="translate">
+    German (Germany and Switzerland), French, Italian and English included. Google Consent Mode v2 built in.
+  </Card>
+</CardGrid>

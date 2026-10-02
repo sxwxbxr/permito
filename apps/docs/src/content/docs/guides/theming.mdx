@@ -1,0 +1,53 @@
+---
+title: Theming
+description: Adapt the look with CSS variables, classes or fully headless.
+---
+
+Import the default theme once:
+
+```ts
+import "@permito/react/styles.css";
+```
+
+## CSS variables
+
+The variables are defined with zero specificity on `:root` and inherited, so you can override them on `:root`, on any wrapper, or on `.pmt-root`:
+
+```css
+:root {
+  --pmt-accent: #0f766e;
+  --pmt-accent-fg: #ffffff;
+  --pmt-radius: 4px;
+  --pmt-font: "Inter", system-ui, sans-serif;
+}
+```
+
+| Variable | Purpose |
+|---|---|
+| `--pmt-bg`, `--pmt-fg`, `--pmt-muted` | Background, text, secondary text |
+| `--pmt-accent`, `--pmt-accent-fg` | Buttons and switches |
+| `--pmt-border`, `--pmt-surface` | Borders and nested surfaces |
+| `--pmt-focus` | Focus ring |
+| `--pmt-radius`, `--pmt-shadow`, `--pmt-font`, `--pmt-z`, `--pmt-max-width` | Shape, depth, typography, stacking, width |
+
+## Light and dark
+
+Dark mode follows `prefers-color-scheme`. To force a theme, either set `data-pmt-theme="dark"` (or `"light"`) on `<html>` or any ancestor, or pass it to the provider:
+
+```tsx
+<PermitoProvider config={config} theme={isDark ? "dark" : "light"}>
+```
+
+## Portals and scoped styles
+
+Banner, preference center and the preferences button render into `document.body` by default, so layouts with `transform`, `filter` or `contain` cannot clip them. Styles scoped to a wrapper (for example `.tenant-a { --pmt-accent: … }`) therefore do not reach them. Either:
+
+- put the variables on `:root` or `<html>`, or
+- pass an element inside your wrapper as `portalContainer` on the provider, or
+- render in place with `portal={false}` on the component.
+
+Keep "Accept all" and "Reject all" visually equal when you restyle them. Both use the class `pmt-btn--choice`.
+
+## Fully custom
+
+Every component accepts `className` and `unstyled`. For a completely own UI, use the hooks (`useConsent`) and render your own markup.
