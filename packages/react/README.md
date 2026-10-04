@@ -1,7 +1,108 @@
 # @permito/react
 
-Part of [Permito](https://github.com/sxwxbxr/permito), the privacy-first consent toolkit for React and Next.js. See the main README for documentation.
+[![npm](https://img.shields.io/npm/v/@permito/react.svg)](https://www.npmjs.com/package/@permito/react)
+[![license](https://img.shields.io/npm/l/@permito/react.svg)](https://github.com/sxwxbxr/permito/blob/main/LICENSE)
 
-Permito is technical consent infrastructure, not legal advice.
+Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js. Google Consent Mode v2, translations for DE, DE-CH, EN, FR and IT. No network calls, no tracking, no dark patterns.
 
-License: MIT
+Part of [Permito](https://permito.sweber.dev). Built on [`@permito/core`](https://www.npmjs.com/package/@permito/core), which is installed with it.
+
+> **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.
+
+## Installation
+
+```bash
+npm install @permito/react
+```
+
+Requires React 18.2 or newer.
+
+## Quick start
+
+```tsx
+"use client";
+
+import {
+  ConsentBanner,
+  PermitoProvider,
+  PreferenceCenter,
+  PreferencesButton,
+} from "@permito/react";
+import "@permito/react/styles.css";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return (
+    <PermitoProvider
+      config={{
+        consentVersion: "2026-10",
+        language: "de-CH",
+        categories: [{ id: "necessary", required: true }, { id: "statistics" }, { id: "marketing" }],
+        services: [
+          { id: "youtube", name: "YouTube", provider: "Google Ireland Ltd.", category: "marketing" },
+        ],
+      }}
+      privacyPolicyUrl="/datenschutz"
+      googleConsentMode
+    >
+      {children}
+      <ConsentBanner />
+      <PreferenceCenter />
+      <PreferencesButton />
+    </PermitoProvider>
+  );
+}
+```
+
+Banner and preference center render into `document.body` through a portal, so ancestors with `transform`, `filter` or `contain` cannot clip them.
+
+## Gating scripts and embeds
+
+```tsx
+import { ConsentGate, ConsentIframe, ConsentScript } from "@permito/react";
+
+<ConsentGate category="statistics" fallback={<p>Statistics are disabled.</p>}>
+  <Dashboard />
+</ConsentGate>
+
+<ConsentScript service="plausible" src="https://plausible.io/js/script.js" defer
+  attributes={{ "data-domain": "example.com" }} />
+
+<ConsentIframe service="youtube" title="Product video"
+  src="https://www.youtube-nocookie.com/embed/VIDEO_ID" width={560} height={315} />
+```
+
+Nothing is rendered on the server or injected on the client until consent exists. `ConsentIframe` shows a placeholder with "Load once" and "Always allow".
+
+## Hooks
+
+```ts
+const { categories, needsConsent, acceptAll, rejectAll, updateConsent, openPreferences, resetConsent } = useConsent();
+const statisticsAllowed = useHasConsent("statistics");
+const youtubeAllowed = useHasServiceConsent("youtube");
+```
+
+## Next.js App Router
+
+`@permito/react/server` has no `"use client"` and is safe in server components, route handlers and plain Node:
+
+```tsx
+import "@permito/react/styles.css";
+import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permito/react/server";
+import { headers } from "next/headers";
+
+const initialState = readConsentFromCookieHeader((await headers()).get("cookie"));
+```
+
+Pass `initialState` into the provider config to render already-allowed content without a flash.
+
+## Theming
+
+Override CSS variables on `:root` or any ancestor (`--pmt-accent`, `--pmt-bg`, `--pmt-fg`, `--pmt-radius`, `--pmt-font`, …). Dark mode follows `prefers-color-scheme`, or force it with `data-pmt-theme="dark"` on an ancestor or `theme="dark"` on the provider. Every component accepts `className` and `unstyled`.
+
+## Documentation
+
+Full configuration reference, recipes and a live demo: **[permito.sweber.dev](https://permito.sweber.dev)**
+
+## License
+
+MIT © [Seya Weber](https://github.com/sxwxbxr)

@@ -1,5 +1,12 @@
 # Permito
 
+[![@permito/core](https://img.shields.io/npm/v/@permito/core.svg?label=%40permito%2Fcore)](https://www.npmjs.com/package/@permito/core)
+[![@permito/react](https://img.shields.io/npm/v/@permito/react.svg?label=%40permito%2Freact)](https://www.npmjs.com/package/@permito/react)
+[![CI](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml/badge.svg)](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml)
+[![license](https://img.shields.io/npm/l/@permito/core.svg)](LICENSE)
+
+**Documentation and live demo: [permito.sweber.dev](https://permito.sweber.dev)**
+
 Privacy-first consent toolkit for React and Next.js. Accessible banner and preference center, consent gates for scripts and embeds, Google Consent Mode v2. No network calls, no tracking, no dark patterns.
 
 > **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.

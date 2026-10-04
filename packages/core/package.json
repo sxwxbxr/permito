@@ -1,8 +1,18 @@
 {
   "name": "@permito/core",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Privacy-first, framework-agnostic consent engine. No network calls, no tracking.",
   "license": "MIT",
+  "author": "Seya Weber (https://github.com/sxwxbxr)",
+  "homepage": "https://permito.sweber.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxwxbxr/permito.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/sxwxbxr/permito/issues"
+  },
   "type": "module",
   "sideEffects": false,
   "main": "./dist/index.cjs",
@@ -10,15 +20,22 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "README.md"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "consent",
@@ -28,6 +45,10 @@
     "privacy",
     "consent-mode"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "tsup",
     "test": "vitest run",
