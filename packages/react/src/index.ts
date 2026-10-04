@@ -8,7 +8,7 @@ export {
   createCookieStorage,
   createLocalStorage,
   createMemoryStorage,
-} from "@permito/core";
+} from "@permitojs/core";
 export { type BannerPosition, ConsentBanner, type ConsentBannerProps } from "./banner";
 export {
   type PermitoContextValue,

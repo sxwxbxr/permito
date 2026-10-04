@@ -1,4 +1,4 @@
-import { ConsentGate, ConsentIframe, ConsentScript } from "@permito/react";
+import { ConsentGate, ConsentIframe, ConsentScript } from "@permitojs/react";
 
 export default function Home() {
   return (

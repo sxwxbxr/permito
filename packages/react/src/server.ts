@@ -9,4 +9,4 @@ export {
   isConsentState,
   parseConsentState,
   readConsentFromCookieHeader,
-} from "@permito/core";
+} from "@permitojs/core";

@@ -1,5 +1,5 @@
 {
-  "name": "@permito/core",
+  "name": "@permitojs/core",
   "version": "0.0.0",
   "description": "Privacy-first, framework-agnostic consent engine. No network calls, no tracking.",
   "license": "MIT",

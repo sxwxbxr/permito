@@ -6,13 +6,13 @@ description: Use Permito in a client-rendered React app.
 In a client-only app there is no server rendering, so you do not need `initialState`. The decision is read synchronously from the cookie when the provider mounts.
 
 ```tsx title="src/main.tsx"
-import "@permito/react/styles.css";
+import "@permitojs/react/styles.css";
 import {
   ConsentBanner,
   PermitoProvider,
   PreferenceCenter,
   PreferencesButton,
-} from "@permito/react";
+} from "@permitojs/react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
 

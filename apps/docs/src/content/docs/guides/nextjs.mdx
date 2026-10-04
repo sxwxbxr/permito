@@ -16,7 +16,7 @@ import {
   PermitoProvider,
   PreferenceCenter,
   PreferencesButton,
-} from "@permito/react";
+} from "@permitojs/react";
 import type { ReactNode } from "react";
 
 export function Providers({
@@ -56,11 +56,11 @@ export function Providers({
 
 ## 2. Root layout
 
-Read the consent cookie on the server and pass it down. Import server helpers from `@permito/react/server`, which has no `"use client"` directive.
+Read the consent cookie on the server and pass it down. Import server helpers from `@permitojs/react/server`, which has no `"use client"` directive.
 
 ```tsx title="app/layout.tsx"
-import "@permito/react/styles.css";
-import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permito/react/server";
+import "@permitojs/react/styles.css";
+import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permitojs/react/server";
 import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import { Providers } from "./providers";
@@ -85,7 +85,7 @@ Reading the cookie makes the route dynamic. If you prefer static pages, leave ou
 ## 3. Gate content
 
 ```tsx title="app/page.tsx"
-import { ConsentGate, ConsentIframe, ConsentScript } from "@permito/react";
+import { ConsentGate, ConsentIframe, ConsentScript } from "@permitojs/react";
 
 export default function Page() {
   return (
@@ -102,7 +102,7 @@ export default function Page() {
 }
 ```
 
-Components from `@permito/react` can be used directly in server components; they are client components under the hood.
+Components from `@permitojs/react` can be used directly in server components; they are client components under the hood.
 
 ## Content Security Policy
 

@@ -1,4 +1,4 @@
-import type { ConsentSnapshot, ConsentSource, Translations, UpdateOptions } from "@permito/core";
+import type { ConsentSnapshot, ConsentSource, Translations, UpdateOptions } from "@permitojs/core";
 import { useMemo } from "react";
 import { usePermitoContext } from "./context";
 

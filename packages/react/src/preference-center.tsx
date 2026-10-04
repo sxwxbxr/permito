@@ -1,4 +1,4 @@
-import { type ConsentService, localize } from "@permito/core";
+import { type ConsentService, localize } from "@permitojs/core";
 import { useCallback, useId, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useModalFocus } from "./focus";

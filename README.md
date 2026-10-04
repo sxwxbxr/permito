@@ -1,9 +1,9 @@
 # Permito
 
-[![@permito/core](https://img.shields.io/npm/v/@permito/core.svg?label=%40permito%2Fcore)](https://www.npmjs.com/package/@permito/core)
-[![@permito/react](https://img.shields.io/npm/v/@permito/react.svg?label=%40permito%2Freact)](https://www.npmjs.com/package/@permito/react)
+[![@permitojs/core](https://img.shields.io/npm/v/@permitojs/core.svg?label=%40permitojs%2Fcore)](https://www.npmjs.com/package/@permitojs/core)
+[![@permitojs/react](https://img.shields.io/npm/v/@permitojs/react.svg?label=%40permitojs%2Freact)](https://www.npmjs.com/package/@permitojs/react)
 [![CI](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml/badge.svg)](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml)
-[![license](https://img.shields.io/npm/l/@permito/core.svg)](LICENSE)
+[![license](https://img.shields.io/npm/l/@permitojs/core.svg)](LICENSE)
 
 **Documentation and live demo: [permito.sweber.dev](https://permito.sweber.dev)**
 
@@ -13,8 +13,8 @@ Privacy-first consent toolkit for React and Next.js. Accessible banner and prefe
 
 | Package | Description |
 |---|---|
-| [`@permito/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, translations (DE, DE-CH, EN, FR, IT) |
-| [`@permito/react`](packages/react) | React components and hooks, Next.js App Router ready |
+| [`@permitojs/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, translations (DE, DE-CH, EN, FR, IT) |
+| [`@permitojs/react`](packages/react) | React components and hooks, Next.js App Router ready |
 
 ## Principles
 
@@ -28,7 +28,7 @@ Privacy-first consent toolkit for React and Next.js. Accessible banner and prefe
 ## Quick start (Next.js App Router)
 
 ```bash
-pnpm add @permito/react
+pnpm add @permitojs/react
 ```
 
 ```tsx
@@ -41,7 +41,7 @@ import {
   PermitoProvider,
   PreferenceCenter,
   PreferencesButton,
-} from "@permito/react";
+} from "@permitojs/react";
 
 export function Providers({ initialState, children }: { initialState: ConsentState | null; children: React.ReactNode }) {
   return (
@@ -69,8 +69,8 @@ export function Providers({ initialState, children }: { initialState: ConsentSta
 
 ```tsx
 // app/layout.tsx (server component)
-import "@permito/react/styles.css";
-import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permito/react/server";
+import "@permitojs/react/styles.css";
+import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permitojs/react/server";
 import { headers } from "next/headers";
 import { Providers } from "./providers";
 
@@ -94,7 +94,7 @@ Reading the cookie on the server is optional. It renders already-allowed content
 ## Gating content
 
 ```tsx
-import { ConsentGate, ConsentIframe, ConsentScript } from "@permito/react";
+import { ConsentGate, ConsentIframe, ConsentScript } from "@permitojs/react";
 
 <ConsentGate category="statistics" fallback={<p>Statistics are disabled.</p>}>
   <Dashboard />
@@ -127,7 +127,7 @@ const youtubeAllowed = useHasServiceConsent("youtube");
 ## Without React
 
 ```ts
-import { activateBlockedElements, createConsentManager } from "@permito/core";
+import { activateBlockedElements, createConsentManager } from "@permitojs/core";
 
 const manager = createConsentManager({ consentVersion: "1", categories, services });
 activateBlockedElements(manager);
@@ -152,7 +152,7 @@ The default cookie `permito_consent` uses `SameSite=Lax`, `Secure` on https, `Pa
 
 ## Theming
 
-Import `@permito/react/styles.css` and override CSS variables on `:root` or any ancestor (`--pmt-accent`, `--pmt-bg`, `--pmt-fg`, `--pmt-radius`, `--pmt-font`, …). Dark mode follows `prefers-color-scheme`, or force it with `data-pmt-theme="dark"` on `<html>` or `theme="dark"` on the provider. Every component accepts `className` and `unstyled` for fully custom styling.
+Import `@permitojs/react/styles.css` and override CSS variables on `:root` or any ancestor (`--pmt-accent`, `--pmt-bg`, `--pmt-fg`, `--pmt-radius`, `--pmt-font`, …). Dark mode follows `prefers-color-scheme`, or force it with `data-pmt-theme="dark"` on `<html>` or `theme="dark"` on the provider. Every component accepts `className` and `unstyled` for fully custom styling.
 
 ## Documentation
 

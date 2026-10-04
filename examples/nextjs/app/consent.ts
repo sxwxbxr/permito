@@ -1,4 +1,4 @@
-import type { ConsentCategoryDefinition, ConsentService } from "@permito/react";
+import type { ConsentCategoryDefinition, ConsentService } from "@permitojs/react";
 
 export const consentVersion = "2026-10";
 
