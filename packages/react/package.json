@@ -1,8 +1,18 @@
 {
   "name": "@permito/react",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js.",
   "license": "MIT",
+  "author": "Seya Weber (https://github.com/sxwxbxr)",
+  "homepage": "https://permito.sweber.dev",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sxwxbxr/permito.git",
+    "directory": "packages/react"
+  },
+  "bugs": {
+    "url": "https://github.com/sxwxbxr/permito/issues"
+  },
   "type": "module",
   "sideEffects": [
     "*.css"
@@ -12,21 +22,33 @@
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     },
     "./server": {
-      "types": "./dist/server.d.ts",
-      "import": "./dist/server.js",
-      "require": "./dist/server.cjs"
+      "import": {
+        "types": "./dist/server.d.ts",
+        "default": "./dist/server.js"
+      },
+      "require": {
+        "types": "./dist/server.d.cts",
+        "default": "./dist/server.cjs"
+      }
     },
     "./styles.css": "./dist/styles.css",
     "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "README.md"
+    "src",
+    "README.md",
+    "LICENSE"
   ],
   "keywords": [
     "consent",
@@ -37,6 +59,10 @@
     "dsg",
     "privacy"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "scripts": {
     "build": "rm -rf dist && tsup",
     "test": "vitest run",

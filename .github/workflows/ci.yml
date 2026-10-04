@@ -23,6 +23,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm test
       - run: pnpm build
+      - run: pnpm check:packages
       - run: pnpm --filter vite-example --filter docs build
 
   e2e:
