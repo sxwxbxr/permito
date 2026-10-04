@@ -1,4 +1,4 @@
-import "@permito/react/styles.css";
+import "@permitojs/react/styles.css";
 import {
   ConsentBanner,
   ConsentGate,
@@ -7,7 +7,7 @@ import {
   PermitoProvider,
   PreferenceCenter,
   useConsent,
-} from "@permito/react";
+} from "@permitojs/react";
 import { useState } from "react";
 
 const languages = ["de-CH", "de", "en", "fr", "it"] as const;

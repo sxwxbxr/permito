@@ -1,4 +1,4 @@
-import "@permito/react/styles.css";
+import "@permitojs/react/styles.css";
 import {
   ConsentBanner,
   ConsentGate,
@@ -7,7 +7,7 @@ import {
   PreferenceCenter,
   PreferencesButton,
   useConsent,
-} from "@permito/react";
+} from "@permitojs/react";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { consentConfig } from "./consent";

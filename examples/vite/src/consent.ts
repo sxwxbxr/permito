@@ -1,4 +1,4 @@
-import type { ConsentConfig } from "@permito/react";
+import type { ConsentConfig } from "@permitojs/react";
 
 export const consentConfig: ConsentConfig = {
   consentVersion: "2026-10",

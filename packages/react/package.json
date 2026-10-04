@@ -1,5 +1,5 @@
 {
-  "name": "@permito/react",
+  "name": "@permitojs/react",
   "version": "0.0.0",
   "description": "Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js.",
   "license": "MIT",
@@ -69,7 +69,7 @@
     "typecheck": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@permito/core": "workspace:*"
+    "@permitojs/core": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18.2.0",

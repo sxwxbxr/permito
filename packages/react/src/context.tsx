@@ -11,7 +11,7 @@ import {
   getTranslations,
   type TranslationOverrides,
   type Translations,
-} from "@permito/core";
+} from "@permitojs/core";
 import {
   createContext,
   type ReactNode,

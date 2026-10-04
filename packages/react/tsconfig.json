@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "paths": {
-      "@permito/core": ["../core/src/index.ts"]
+      "@permitojs/core": ["../core/src/index.ts"]
     }
   },
   "include": ["src", "test"]

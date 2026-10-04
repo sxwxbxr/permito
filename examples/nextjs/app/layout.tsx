@@ -1,5 +1,5 @@
-import "@permito/react/styles.css";
-import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permito/react/server";
+import "@permitojs/react/styles.css";
+import { getConsentModeDefaultScript, readConsentFromCookieHeader } from "@permitojs/react/server";
 import { headers } from "next/headers";
 import type { ReactNode } from "react";
 import { Providers } from "./providers";

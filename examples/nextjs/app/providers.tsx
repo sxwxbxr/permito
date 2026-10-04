@@ -6,7 +6,7 @@ import {
   PermitoProvider,
   PreferenceCenter,
   PreferencesButton,
-} from "@permito/react";
+} from "@permitojs/react";
 import type { ReactNode } from "react";
 import { categories, consentVersion, services } from "./consent";
 

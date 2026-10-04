@@ -1,4 +1,4 @@
-import { format, type LoadScriptOptions, loadScript } from "@permito/core";
+import { format, type LoadScriptOptions, loadScript } from "@permitojs/core";
 import { type IframeHTMLAttributes, type ReactNode, useEffect, useRef, useState } from "react";
 import { usePermitoContext } from "./context";
 import { useIsAllowed } from "./hooks";

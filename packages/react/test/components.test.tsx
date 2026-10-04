@@ -1,4 +1,4 @@
-import { resetLoadedScripts } from "@permito/core";
+import { resetLoadedScripts } from "@permitojs/core";
 import { act, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import axe from "axe-core";

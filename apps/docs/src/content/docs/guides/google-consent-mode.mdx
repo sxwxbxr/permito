@@ -8,7 +8,7 @@ Consent Mode needs two parts.
 **1. A default before any Google tag.** Everything is denied except `security_storage`:
 
 ```tsx
-import { getConsentModeDefaultScript } from "@permito/react/server";
+import { getConsentModeDefaultScript } from "@permitojs/react/server";
 
 <script dangerouslySetInnerHTML={{ __html: getConsentModeDefaultScript() }} />
 ```

@@ -1,24 +1,24 @@
-# @permito/core
+# @permitojs/core
 
-[![npm](https://img.shields.io/npm/v/@permito/core.svg)](https://www.npmjs.com/package/@permito/core)
-[![license](https://img.shields.io/npm/l/@permito/core.svg)](https://github.com/sxwxbxr/permito/blob/main/LICENSE)
+[![npm](https://img.shields.io/npm/v/@permitojs/core.svg)](https://www.npmjs.com/package/@permitojs/core)
+[![license](https://img.shields.io/npm/l/@permitojs/core.svg)](https://github.com/sxwxbxr/permito/blob/main/LICENSE)
 
 Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2 and translations for DE, DE-CH, EN, FR and IT. No network calls, no tracking, no dependencies.
 
-Part of [Permito](https://permito.sweber.dev), a privacy-first consent toolkit. For React and Next.js use [`@permito/react`](https://www.npmjs.com/package/@permito/react), which builds on this package.
+Part of [Permito](https://permito.sweber.dev), a privacy-first consent toolkit. For React and Next.js use [`@permitojs/react`](https://www.npmjs.com/package/@permitojs/react), which builds on this package.
 
 > **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.
 
 ## Installation
 
 ```bash
-npm install @permito/core
+npm install @permitojs/core
 ```
 
 ## Usage
 
 ```ts
-import { activateBlockedElements, createConsentManager } from "@permito/core";
+import { activateBlockedElements, createConsentManager } from "@permitojs/core";
 
 const manager = createConsentManager({
   consentVersion: "2026-10",

@@ -6,7 +6,7 @@ const shared: Options = {
   dts: { compilerOptions: { paths: {} } },
   sourcemap: true,
   target: "es2020",
-  external: ["react", "react-dom", "@permito/core"],
+  external: ["react", "react-dom", "@permitojs/core"],
 };
 
 export default defineConfig([
