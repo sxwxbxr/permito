@@ -1,5 +1,15 @@
 # @permitojs/core
 
+## 0.2.0
+
+### Minor Changes
+
+- e9b7b28: New: `maxAgeDays` lets decisions expire and shows the banner again, `globalPrivacyControl` honours the GPC browser signal (with `readGpcFromHeaders` for SSR), and decisions sync across open tabs (`syncTabs`, on by default with the built-in cookie storage, `manager.destroy()`). The snapshot gains `globalPrivacyControl` and `expiresAt`.
+
+### Patch Changes
+
+- 517208d: Documentation moved to packages.sweber.dev/permito/docs; README links and the package homepage point there.
+
 ## 0.1.0
 
 ### Minor Changes
