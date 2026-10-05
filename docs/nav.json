@@ -3,9 +3,7 @@
   "sections": [
     {
       "label": "Start",
-      "items": [
-        "introduction"
-      ]
+      "items": ["introduction"]
     },
     {
       "label": "Guides",
@@ -31,9 +29,7 @@
     },
     {
       "label": "Legal",
-      "items": [
-        "legal"
-      ]
+      "items": ["legal"]
     }
   ]
 }
