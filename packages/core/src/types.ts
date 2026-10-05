@@ -94,8 +94,34 @@ export interface ConsentConfig {
   language?: string;
   /** Previously stored state, e.g. parsed from the request cookie during SSR. */
   initialState?: ConsentState | null;
+  /**
+   * Ask again once a decision is older than this many days, regardless of where it is stored.
+   * Supervisory authorities commonly recommend 6 to 13 months. Default: no expiry beyond the storage lifetime.
+   */
+  maxAgeDays?: number;
+  /**
+   * Honour the Global Privacy Control signal (`Sec-GPC` header / `navigator.globalPrivacyControl`).
+   * While the visitor has not decided, the listed categories default to declined, also in opt-out mode.
+   * `true` applies to `marketing`. Default: off.
+   */
+  globalPrivacyControl?: boolean | GlobalPrivacyControlOptions;
+  /**
+   * Apply decisions made in another tab of the same site immediately (BroadcastChannel).
+   * Default `true` in the browser.
+   */
+  syncTabs?: boolean;
   /** Injectable clock for tests. */
   now?: () => Date;
+}
+
+export interface GlobalPrivacyControlOptions {
+  /** Categories that default to declined while the signal is present. Default `["marketing"]`. */
+  categories?: string[];
+  /**
+   * The signal itself. Pass the result of `readGpcFromHeaders()` during SSR.
+   * Default: `navigator.globalPrivacyControl` in the browser.
+   */
+  signal?: boolean;
 }
 
 export type ConsentEvent =
@@ -120,6 +146,10 @@ export interface ConsentSnapshot {
   /** `true` when the banner should be shown. */
   needsConsent: boolean;
   mode: ConsentMode;
+  /** `true` when a Global Privacy Control signal is present and honoured. */
+  globalPrivacyControl: boolean;
+  /** ISO 8601 timestamp after which the stored decision expires (`maxAgeDays`), or `null`. */
+  expiresAt: string | null;
 }
 
 export interface UpdateOptions {

@@ -37,6 +37,8 @@ export interface ConsentManager {
   exportState(): ConsentState | null;
   /** Import a decision (validated and normalised against the current config). */
   importState(state: unknown): Promise<boolean>;
+  /** Stops listening to other tabs. Call when the manager is no longer used. */
+  destroy(): void;
 }
 
 export class ConsentConfigError extends Error {
@@ -64,6 +66,28 @@ function validateConfig(config: ConsentConfig): void {
     }
     serviceIds.add(service.id);
   }
+  if (config.maxAgeDays !== undefined && !(config.maxAgeDays > 0)) {
+    throw new ConsentConfigError("maxAgeDays must be a positive number.");
+  }
+}
+
+const DAY_MS = 24 * 60 * 60 * 1000;
+const SYNC_CHANNEL = "permito_consent";
+
+function detectGpc(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return (
+    (navigator as Navigator & { globalPrivacyControl?: boolean }).globalPrivacyControl === true
+  );
+}
+
+function resolveGpcCategories(config: ConsentConfig): Set<string> {
+  const option = config.globalPrivacyControl;
+  if (!option) return new Set();
+  const settings = option === true ? {} : option;
+  const signal = settings.signal ?? detectGpc();
+  if (!signal) return new Set();
+  return new Set(settings.categories ?? ["marketing"]);
 }
 
 export function resolveMode(config: Pick<ConsentConfig, "mode" | "region" | "regionRules">) {
@@ -90,6 +114,7 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
   const now = config.now ?? (() => new Date());
   const services = config.services ?? [];
   const requiredIds = new Set(config.categories.filter((c) => c.required).map((c) => c.id));
+  const gpcCategories = resolveGpcCategories(config);
   const listeners = new Set<() => void>();
   const eventListeners = new Map<ConsentEventType, Set<(event: ConsentEvent) => void>>();
 
@@ -100,16 +125,25 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     const result: Record<string, boolean> = {};
     for (const category of config.categories) {
       // Opt-in: only required categories. Opt-out applies only when the operator configured it.
-      result[category.id] = requiredIds.has(category.id) || mode === "opt-out";
+      result[category.id] =
+        requiredIds.has(category.id) || (mode === "opt-out" && !gpcCategories.has(category.id));
     }
     return result;
   };
 
-  /** Drops unknown keys, forces required categories and rejects outdated versions. */
+  const expiresAt = (state: ConsentState): number | null => {
+    if (config.maxAgeDays === undefined) return null;
+    const decided = Date.parse(state.timestamp);
+    return Number.isNaN(decided) ? 0 : decided + config.maxAgeDays * DAY_MS;
+  };
+
+  /** Drops unknown keys, forces required categories and rejects outdated or expired decisions. */
   const normalize = (state: ConsentState | null): ConsentState | null => {
     if (!state || !isConsentState(state)) return null;
     if (state.version !== config.consentVersion) return null;
     if (config.policyVersion && state.policyVersion !== config.policyVersion) return null;
+    const expiry = expiresAt(state);
+    if (expiry !== null && expiry <= now().getTime()) return null;
     const categories: Record<string, boolean> = {};
     for (const category of config.categories) {
       categories[category.id] =
@@ -138,6 +172,11 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
       services: effectiveServices,
       needsConsent: ready && decision === null,
       mode,
+      globalPrivacyControl: gpcCategories.size > 0,
+      expiresAt:
+        decision && expiresAt(decision) !== null
+          ? new Date(expiresAt(decision) as number).toISOString()
+          : null,
     };
   };
 
@@ -186,15 +225,56 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     return normalize(state) as ConsentState;
   };
 
-  const persist = async (state: ConsentState) => {
+  // Other tabs of the same site: apply their decisions without writing storage again.
+  const channel =
+    config.syncTabs !== false &&
+    typeof window !== "undefined" &&
+    typeof BroadcastChannel !== "undefined"
+      ? new BroadcastChannel(SYNC_CHANNEL)
+      : null;
+  const broadcast = (state: ConsentState | null) => {
+    try {
+      channel?.postMessage({ version: config.consentVersion, state });
+    } catch {
+      // A closed channel or an uncloneable custom state must never break the decision itself.
+    }
+  };
+
+  const applyState = (state: ConsentState) => {
     const previous = commit(state);
     const revoked = Object.keys(state.categories).filter(
       (id) => previous.categories[id] === true && state.categories[id] === false,
     );
     emit({ type: "consent_updated", state });
     if (revoked.length > 0) emit({ type: "consent_revoked", categories: revoked });
-    await storage.set(state);
   };
+
+  const applyReset = () => {
+    const revoked = Object.keys(snapshot.categories).filter(
+      (id) => snapshot.categories[id] === true && !requiredIds.has(id),
+    );
+    commit(null);
+    emit({ type: "consent_revoked", categories: revoked });
+  };
+
+  const persist = async (state: ConsentState) => {
+    applyState(state);
+    await storage.set(state);
+    broadcast(state);
+  };
+
+  if (channel) {
+    channel.onmessage = (event: MessageEvent) => {
+      const data = event.data as { version?: unknown; state?: unknown } | null;
+      if (!data || data.version !== config.consentVersion) return;
+      if (data.state === null) {
+        if (decision !== null) applyReset();
+        return;
+      }
+      const next = normalize(isConsentState(data.state) ? data.state : null);
+      if (next && next.timestamp !== decision?.timestamp) applyState(next);
+    };
+  }
 
   const finishLoading = (stored: ConsentState | null) => {
     commit(normalize(stored));
@@ -282,12 +362,9 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
       return persist(buildState({ ...snapshot.categories }, overrides, source));
     },
     async reset() {
-      const revoked = Object.keys(snapshot.categories).filter(
-        (id) => snapshot.categories[id] === true && !requiredIds.has(id),
-      );
-      commit(null);
-      emit({ type: "consent_revoked", categories: revoked });
+      applyReset();
       await storage.clear();
+      broadcast(null);
     },
     exportState: () => (decision ? structuredClone(decision) : null),
     async importState(state) {
@@ -296,6 +373,9 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
       if (!normalized) return false;
       await persist(normalized);
       return true;
+    },
+    destroy() {
+      channel?.close();
     },
   };
 

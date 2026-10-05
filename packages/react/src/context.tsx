@@ -87,6 +87,7 @@ export function PermitoProvider({
     const serverEquivalent = createConsentManager({
       ...manager.config,
       storage: createMemoryStorage(),
+      syncTabs: false,
       initialState: manager.config.initialState ?? null,
     }).getSnapshot();
     return { ...serverEquivalent, ready: false, needsConsent: false };

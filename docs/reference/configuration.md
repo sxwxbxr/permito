@@ -14,6 +14,9 @@ description: All options of ConsentConfig.
 | `mode` | `"opt-in" \| "opt-out"` | Default `"opt-in"`. |
 | `region`, `regionRules` | `string`, `Record<string, { mode }>` | Choose the mode per region. You supply the region; Permito never geolocates. |
 | `initialState` | `ConsentState \| null` | Decision read on the server. |
+| `maxAgeDays` | `number` | Ask again once a decision is older than this. Works with every storage. See [Lifetime, GPC and tabs](/permito/docs/guides/lifetime-gpc-tabs). |
+| `globalPrivacyControl` | `boolean \| { categories?, signal? }` | Honour the GPC browser signal. `true` declines `marketing` by default while the visitor has not decided. |
+| `syncTabs` | `boolean` | Default `true`. Decisions apply in all open tabs of the site at once. |
 | `now` | `() => Date` | Clock override for tests. |
 
 ## Categories

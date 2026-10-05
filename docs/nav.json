@@ -3,7 +3,9 @@
   "sections": [
     {
       "label": "Start",
-      "items": ["introduction"]
+      "items": [
+        "introduction"
+      ]
     },
     {
       "label": "Guides",
@@ -13,6 +15,7 @@
         "guides/vanilla",
         "guides/blocking",
         "guides/google-consent-mode",
+        "guides/lifetime-gpc-tabs",
         "guides/theming",
         "guides/translations"
       ]
@@ -28,7 +31,9 @@
     },
     {
       "label": "Legal",
-      "items": ["legal"]
+      "items": [
+        "legal"
+      ]
     }
   ]
 }

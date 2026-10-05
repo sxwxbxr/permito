@@ -9,4 +9,5 @@ export {
   isConsentState,
   parseConsentState,
   readConsentFromCookieHeader,
+  readGpcFromHeaders,
 } from "@permitojs/core";
