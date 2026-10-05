@@ -7,7 +7,7 @@ description: Functions exported by @permitojs/core.
 
 | Member | Description |
 |---|---|
-| `getSnapshot()`, `subscribe(fn)` | External store contract. Snapshot reference stays stable between changes. |
+| `getSnapshot()`, `subscribe(fn)` | External store contract. Snapshot reference stays stable between changes. The snapshot also has `globalPrivacyControl` and `expiresAt`. |
 | `ready` | Promise, resolves once async storage has been read. |
 | `hasConsent(id)`, `hasServiceConsent(id)` | |
 | `acceptAll(source?)`, `rejectAll(source?)` | |
@@ -15,6 +15,7 @@ description: Functions exported by @permitojs/core.
 | `setServiceConsent(id, granted, source?)` | |
 | `reset()` | Clears storage and emits `consent_revoked`. |
 | `exportState()`, `importState(state)` | Import is validated against the current config. |
+| `destroy()` | Stops listening to other tabs. Call it if you create managers dynamically. |
 | `on(type, fn)` | Events: `consent_loaded`, `consent_updated`, `consent_revoked`, `service_allowed`, `service_blocked`. |
 
 ## Helpers
@@ -22,6 +23,7 @@ description: Functions exported by @permitojs/core.
 | Function | Description |
 |---|---|
 | `readConsentFromCookieHeader(header, name?)` | Parse the decision from a `Cookie` header on the server. |
+| `readGpcFromHeaders(headers)` | `true` if the request carries `Sec-GPC: 1`. Accepts `Headers` or a plain header object. |
 | `parseConsentState(raw)`, `serializeConsentState(state)`, `isConsentState(value)` | Validate untrusted data. |
 | `getConsentModeDefaultScript(options)` | Inline Consent Mode default snippet. |
 | `connectGoogleConsentMode(manager, options)` | Push Consent Mode updates. |

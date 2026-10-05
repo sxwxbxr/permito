@@ -47,6 +47,7 @@ export {
   isConsentState,
   parseConsentState,
   readConsentFromCookieHeader,
+  readGpcFromHeaders,
   serializeConsentState,
 } from "./storage";
 export * from "./types";

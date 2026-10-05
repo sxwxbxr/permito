@@ -79,6 +79,26 @@ export function readConsentFromCookieHeader(
   return parseConsentState(readCookie(cookieHeader, name));
 }
 
+/**
+ * Reads the Global Privacy Control signal from request headers (`Sec-GPC: 1`).
+ * Pass the result as `globalPrivacyControl: { signal }` during SSR.
+ */
+export function readGpcFromHeaders(
+  headers:
+    | { get(name: string): string | null }
+    | Record<string, string | string[] | undefined>
+    | null
+    | undefined,
+): boolean {
+  if (!headers) return false;
+  const value =
+    typeof (headers as { get?: unknown }).get === "function"
+      ? (headers as { get(name: string): string | null }).get("sec-gpc")
+      : (headers as Record<string, string | string[] | undefined>)["sec-gpc"];
+  const first = Array.isArray(value) ? value[0] : value;
+  return first?.trim() === "1";
+}
+
 export function createCookieStorage(options: CookieStorageOptions = {}): ConsentStorage {
   const name = options.name ?? DEFAULT_STORAGE_KEY;
   const path = options.path ?? "/";
