@@ -16,7 +16,7 @@ description: All options of ConsentConfig.
 | `initialState` | `ConsentState \| null` | Decision read on the server. |
 | `maxAgeDays` | `number` | Ask again once a decision is older than this. Works with every storage. See [Lifetime, GPC and tabs](/permito/docs/guides/lifetime-gpc-tabs). |
 | `globalPrivacyControl` | `boolean \| { categories?, signal? }` | Honour the GPC browser signal. `true` declines `marketing` by default while the visitor has not decided. |
-| `syncTabs` | `boolean` | Default `true`. Decisions apply in all open tabs of the site at once. |
+| `syncTabs` | `boolean` | Decisions apply in all open tabs of the site at once. Default `true` with the built-in cookie storage, `false` with your own `storage`. |
 | `now` | `() => Date` | Clock override for tests. |
 
 ## Categories

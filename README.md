@@ -143,7 +143,7 @@ await manager.update({ statistics: true });
 | `policyVersion` | Optional. A changed value also asks again. |
 | `maxAgeDays` | Ask again once a decision is older than this many days (any storage). |
 | `globalPrivacyControl` | Honour the GPC browser signal: `marketing` (or your list) starts declined until the visitor decides. |
-| `syncTabs` | Default `true`. A decision applies in all open tabs immediately. |
+| `syncTabs` | A decision applies in all open tabs immediately. On by default with the built-in cookie storage. |
 | `categories` | `{ id, name?, description?, required? }`. Built-in texts exist for `necessary`, `preferences`, `statistics`, `marketing`, `security`. |
 | `services` | `{ id, name, category, provider?, purpose?, cookies?, privacyPolicyUrl?, requiresConsent? }` |
 | `storage` | `createCookieStorage()` (default), `createLocalStorage()`, `createSessionStorage()`, `createMemoryStorage()` or your own `{ get, set, clear }`. |

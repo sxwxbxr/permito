@@ -107,7 +107,7 @@ export interface ConsentConfig {
   globalPrivacyControl?: boolean | GlobalPrivacyControlOptions;
   /**
    * Apply decisions made in another tab of the same site immediately (BroadcastChannel).
-   * Default `true` in the browser.
+   * Default `true` with the built-in cookie storage, `false` when you pass your own `storage`.
    */
   syncTabs?: boolean;
   /** Injectable clock for tests. */

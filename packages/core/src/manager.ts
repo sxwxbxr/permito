@@ -226,8 +226,10 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
   };
 
   // Other tabs of the same site: apply their decisions without writing storage again.
+  // With a custom storage (memory, demos, server-backed) syncing is opt-in, since
+  // managers on one page would otherwise share decisions they do not share in storage.
   const channel =
-    config.syncTabs !== false &&
+    (config.syncTabs ?? !config.storage) &&
     typeof window !== "undefined" &&
     typeof BroadcastChannel !== "undefined"
       ? new BroadcastChannel(SYNC_CHANNEL)

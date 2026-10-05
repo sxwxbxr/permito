@@ -43,4 +43,4 @@ const gpc = readGpcFromHeaders(await headers());
 
 A decision made in one tab applies immediately in every other open tab of the same site, including gated scripts, iframes and Google Consent Mode updates. Permito uses a `BroadcastChannel` and sends nothing over the network. Decisions for another `consentVersion` are ignored.
 
-Turn it off with `syncTabs: false`. Without React, call `manager.destroy()` when you throw a manager away.
+It is on by default with the built-in cookie storage. With your own `storage` (for example memory storage in a demo) turn it on with `syncTabs: true`; turn it off with `syncTabs: false`. Without React, call `manager.destroy()` when you throw a manager away.
