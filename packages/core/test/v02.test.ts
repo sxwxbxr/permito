@@ -170,3 +170,15 @@ describe("syncTabs", () => {
     tabB.destroy();
   });
 });
+
+describe("syncTabs defaults", () => {
+  it("does not sync managers with a custom storage unless asked", async () => {
+    const config = baseConfig();
+    delete config.syncTabs;
+    const tabA = createConsentManager(config);
+    const tabB = createConsentManager({ ...config, storage: createMemoryStorage() });
+    await tabA.acceptAll();
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    expect(tabB.getSnapshot().needsConsent).toBe(true);
+  });
+});
