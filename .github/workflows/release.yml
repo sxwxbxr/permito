@@ -33,6 +33,9 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # npm Trusted Publishing (OIDC) needs npm >= 11.5. pnpm publish hands the tarball to npm.
+      - run: npm install -g npm@latest
+
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
