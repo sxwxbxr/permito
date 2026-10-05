@@ -5,7 +5,7 @@
 
 Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2 and translations for DE, DE-CH, EN, FR and IT. No network calls, no tracking, no dependencies.
 
-Part of [Permito](https://permito.sweber.dev), a privacy-first consent toolkit. For React and Next.js use [`@permitojs/react`](https://www.npmjs.com/package/@permitojs/react), which builds on this package.
+Part of [Permito](https://packages.sweber.dev/permito/docs), a privacy-first consent toolkit. For React and Next.js use [`@permitojs/react`](https://www.npmjs.com/package/@permitojs/react), which builds on this package.
 
 > **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.
 
@@ -59,7 +59,7 @@ The default cookie `permito_consent` uses `SameSite=Lax`, `Secure` on https, `Pa
 
 ## Documentation
 
-Full configuration reference, recipes and a live demo: **[permito.sweber.dev](https://permito.sweber.dev)**
+Full configuration reference and recipes: **[packages.sweber.dev/permito/docs](https://packages.sweber.dev/permito/docs)**. Live demo: [packages.sweber.dev/permito/demo](https://packages.sweber.dev/permito/demo)
 
 ## License
 

@@ -5,7 +5,7 @@
 [![CI](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml/badge.svg)](https://github.com/sxwxbxr/permito/actions/workflows/ci.yml)
 [![license](https://img.shields.io/npm/l/@permitojs/core.svg)](LICENSE)
 
-**Documentation and live demo: [permito.sweber.dev](https://permito.sweber.dev)**
+**Documentation: [packages.sweber.dev/permito/docs](https://packages.sweber.dev/permito/docs) · Live demo: [packages.sweber.dev/permito/demo](https://packages.sweber.dev/permito/demo)**
 
 Privacy-first consent toolkit for React and Next.js. Accessible banner and preference center, consent gates for scripts and embeds, Google Consent Mode v2. No network calls, no tracking, no dark patterns.
 
@@ -156,7 +156,7 @@ Import `@permitojs/react/styles.css` and override CSS variables on `:root` or an
 
 ## Documentation
 
-The docs site lives in [`apps/docs`](apps/docs) (Astro Starlight, with a live demo). Run it with `pnpm --filter docs dev`.
+The documentation is written in [`docs/`](docs) as Markdown and published at [packages.sweber.dev/permito/docs](https://packages.sweber.dev/permito/docs); [`docs/nav.json`](docs/nav.json) sets the order of the sidebar.
 
 Examples: [`examples/nextjs`](examples/nextjs) (App Router, Playwright tests) and [`examples/vite`](examples/vite) (client-only React).
 

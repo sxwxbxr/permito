@@ -5,7 +5,7 @@
 
 Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js. Google Consent Mode v2, translations for DE, DE-CH, EN, FR and IT. No network calls, no tracking, no dark patterns.
 
-Part of [Permito](https://permito.sweber.dev). Built on [`@permitojs/core`](https://www.npmjs.com/package/@permitojs/core), which is installed with it.
+Part of [Permito](https://packages.sweber.dev/permito/docs). Built on [`@permitojs/core`](https://www.npmjs.com/package/@permitojs/core), which is installed with it.
 
 > **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.
 
@@ -101,7 +101,7 @@ Override CSS variables on `:root` or any ancestor (`--pmt-accent`, `--pmt-bg`, `
 
 ## Documentation
 
-Full configuration reference, recipes and a live demo: **[permito.sweber.dev](https://permito.sweber.dev)**
+Full configuration reference and recipes: **[packages.sweber.dev/permito/docs](https://packages.sweber.dev/permito/docs)**. Live demo: [packages.sweber.dev/permito/demo](https://packages.sweber.dev/permito/demo)
 
 ## License
 
