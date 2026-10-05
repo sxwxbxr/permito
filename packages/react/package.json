@@ -4,7 +4,7 @@
   "description": "Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js.",
   "license": "MIT",
   "author": "Seya Weber (https://github.com/sxwxbxr)",
-  "homepage": "https://permito.sweber.dev",
+  "homepage": "https://packages.sweber.dev/permito",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sxwxbxr/permito.git",

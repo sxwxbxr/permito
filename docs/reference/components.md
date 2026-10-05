@@ -9,7 +9,7 @@ description: Props of all React components.
 |---|---|
 | `config` | `ConsentConfig`. Read once on mount; change the `key` to apply a new config. |
 | `manager` | Use an existing core manager instead. |
-| `translations` | Text overrides, see [Translations](/guides/translations/). |
+| `translations` | Text overrides, see [Translations](../guides/translations.md). |
 | `privacyPolicyUrl`, `imprintUrl` | Links shown in the banner and preference center. |
 | `googleConsentMode` | `true` or `{ mapping, dataLayerName }`. |
 | `blockedElements` | `true` or `{ root, allowlist, nonce }`. Activates blocked markup. |

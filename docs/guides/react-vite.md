@@ -35,6 +35,6 @@ createRoot(document.getElementById("root")!).render(
 );
 ```
 
-For Google Consent Mode, put the default snippet into `index.html` before any Google tag. See [Google Consent Mode](/guides/google-consent-mode/).
+For Google Consent Mode, put the default snippet into `index.html` before any Google tag. See [Google Consent Mode](./google-consent-mode.md).
 
 A complete example lives in [`examples/vite`](https://github.com/sxwxbxr/permito/tree/main/examples/vite).

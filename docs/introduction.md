@@ -22,7 +22,7 @@ Permito is a consent toolkit for websites built with React. It shows a banner, l
 
 ## What Permito is not
 
-Permito is technical infrastructure, **not legal advice**. It does not tell you which services need consent, it does not scan your site and it cannot guarantee compliance with the GDPR, the Swiss revDSG or any other law. See [Legal notes](/legal/).
+Permito is technical infrastructure, **not legal advice**. It does not tell you which services need consent, it does not scan your site and it cannot guarantee compliance with the GDPR, the Swiss revDSG or any other law. See [Legal notes](./legal.md).
 
 ## Installation
 
@@ -31,4 +31,4 @@ pnpm add @permitojs/react
 # or: npm install @permitojs/react
 ```
 
-Continue with the guide for your stack: [Next.js](/guides/nextjs/), [React with Vite](/guides/react-vite/) or [without React](/guides/vanilla/).
+Continue with the guide for your stack: [Next.js](./guides/nextjs.md), [React with Vite](./guides/react-vite.md) or [without React](./guides/vanilla.md).

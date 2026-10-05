@@ -1,0 +1,34 @@
+{
+  "$comment": "Sidebar order for packages.sweber.dev/permito/docs. Each item is a path below docs/ without .md.",
+  "sections": [
+    {
+      "label": "Start",
+      "items": ["introduction"]
+    },
+    {
+      "label": "Guides",
+      "items": [
+        "guides/nextjs",
+        "guides/react-vite",
+        "guides/vanilla",
+        "guides/blocking",
+        "guides/google-consent-mode",
+        "guides/theming",
+        "guides/translations"
+      ]
+    },
+    {
+      "label": "Reference",
+      "items": [
+        "reference/configuration",
+        "reference/components",
+        "reference/hooks",
+        "reference/core-api"
+      ]
+    },
+    {
+      "label": "Legal",
+      "items": ["legal"]
+    }
+  ]
+}

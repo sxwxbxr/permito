@@ -4,7 +4,7 @@
   "description": "Privacy-first, framework-agnostic consent engine. No network calls, no tracking.",
   "license": "MIT",
   "author": "Seya Weber (https://github.com/sxwxbxr)",
-  "homepage": "https://permito.sweber.dev",
+  "homepage": "https://packages.sweber.dev/permito",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sxwxbxr/permito.git",
