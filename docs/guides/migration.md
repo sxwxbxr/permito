@@ -3,7 +3,7 @@ title: Migrating to 1.0
 description: What changed between 0.x releases and what to check before 1.0.
 ---
 
-There are no breaking changes between 0.1.0 and 0.8.0. Every release added to the API, and the stored decision format (schema 1) has not changed, so visitors keep their choice when you upgrade. Three behavior details are worth knowing.
+There are no breaking changes between 0.1.0 and 0.9.0. Every release added to the API, and the stored decision format (schema 1) has not changed, so visitors keep their choice when you upgrade. Three behavior details are worth knowing.
 
 | Since | Detail | What to check |
 |---|---|---|
