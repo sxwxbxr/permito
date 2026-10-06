@@ -10,7 +10,7 @@ description: All options of ConsentConfig.
 | `services` | `ConsentService[]` | Services shown in the preference center and addressable by gates. |
 | `policyVersion` | `string` | Optional. A changed value also asks again. |
 | `storage` | `ConsentStorage` | Default: cookie in the browser, memory on the server. |
-| `language` | `string` | `de`, `de-CH`, `en`, `fr`, `it`. |
+| `language` | `string` | `de`, `de-CH`, `en`, `fr`, `it`, `es`, `nl`, `pl`, `pt`. |
 | `mode` | `"opt-in" \| "opt-out"` | Default `"opt-in"`. |
 | `region`, `regionRules` | `string`, `Record<string, { mode }>` | Choose the mode per region. You supply the region; Permito never geolocates. |
 | `initialState` | `ConsentState \| null` | Decision read on the server. |

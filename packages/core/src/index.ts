@@ -65,4 +65,5 @@ export {
   readGpcFromHeaders,
   serializeConsentState,
 } from "./storage";
+export { serviceFromTemplate, serviceTemplates } from "./templates";
 export * from "./types";
