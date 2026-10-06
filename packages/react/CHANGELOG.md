@@ -1,5 +1,16 @@
 # @permitojs/react
 
+## 0.7.0
+
+### Minor Changes
+
+- f8f816a: Return focus to the floating settings button after the preference center closes (it was lost because the button is removed while the dialog is open). Add automated WCAG 2.2 AA checks (axe-core) and end-to-end tests in Chromium, Firefox and WebKit to CI. New docs: Content Security Policy and SRI, accessibility, API status.
+
+### Patch Changes
+
+- Updated dependencies [f8f816a]
+  - @permitojs/core@0.7.0
+
 ## 0.6.0
 
 ### Minor Changes
