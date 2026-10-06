@@ -8,6 +8,7 @@ export {
   createCookieStorage,
   createLocalStorage,
   createMemoryStorage,
+  createSessionStorage,
 } from "@permitojs/core";
 export { type BannerPosition, ConsentBanner, type ConsentBannerProps } from "./banner";
 export {

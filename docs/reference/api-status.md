@@ -3,9 +3,9 @@ title: API status
 description: Which parts of the API are stable, which may still change before 1.0, and what is deprecated.
 ---
 
-Permito follows semantic versioning. Until 1.0.0 a minor release may change an API, and every change is listed in the release notes with a migration hint. This page says where changes are still possible, so you can judge the risk before 1.0.
+Permito follows semantic versioning. Version 0.8 is the API freeze candidate: the runtime exports of every entry point are pinned by a test, and until 1.0.0 only the items under "May still change" can change, with a migration hint in the release notes. See [Migrating to 1.0](../guides/migration.md).
 
-## Stable (expected to be frozen at 1.0)
+## Stable (frozen at 1.0)
 
 - `createConsentManager` and its members: `getSnapshot`, `subscribe`, `on`, `hasConsent`, `hasServiceConsent`, `acceptAll`, `rejectAll`, `update`, `setServiceConsent`, `reset`, `exportState`, `importState`, `destroy`, and the `ConsentConfig` and `ConsentSnapshot` shapes.
 - The stored decision (`ConsentState`, schema 1). Changing it would invalidate stored decisions, so it only changes with a schema bump and a migration.
@@ -13,6 +13,8 @@ Permito follows semantic versioning. Until 1.0.0 a minor release may change an A
 - Script and iframe gating (`loadScript`, `activateBlockedElements`, the `data-consent-*` attributes).
 - React: `PermitoProvider`, `ConsentBanner`, `PreferenceCenter`, `ConsentScript`, `ConsentIframe`, `ConsentGate`, `useConsent`, `useHasConsent`, `useHasServiceConsent`.
 - Server helpers: `readConsentFromCookieHeader`, `readGpcFromHeaders`.
+
+Two exports are for special cases: `resetLoadedScripts` is a test helper, and `usePermitoContext` gives access to internals of the provider. Both are exported but not part of the stable surface.
 
 ## May still change before 1.0
 
