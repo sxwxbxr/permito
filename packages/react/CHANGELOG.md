@@ -1,5 +1,16 @@
 # @permitojs/react
 
+## 0.9.0
+
+### Minor Changes
+
+- 9ff1869: Release candidate for 1.0: the API listed as stable is frozen, including the script tag config, the bridges, service templates and the Vue and Svelte adapters. New pages: WordPress guide, versioning and support policy, and a manual screen reader checklist. No code changes.
+
+### Patch Changes
+
+- Updated dependencies [9ff1869]
+  - @permitojs/core@0.9.0
+
 ## 0.8.0
 
 ### Minor Changes
