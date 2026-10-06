@@ -1,5 +1,11 @@
 # @permitojs/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 0ce2e39: Framework-free consent UI: `createConsentUI` from `@permitojs/core/ui` and a drop-in script-tag build (`dist/permito.global.js`, `window.Permito`) with banner, preference dialog, floating button, `data-permito-open` links and Consent Mode v2 defaults. The shared stylesheet now lives in `@permitojs/core/styles.css` (`@permitojs/react/styles.css` still works).
+
 ## 0.2.0
 
 ### Minor Changes
