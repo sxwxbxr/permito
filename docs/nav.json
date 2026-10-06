@@ -11,6 +11,7 @@
         "guides/nextjs",
         "guides/react-vite",
         "guides/vanilla",
+        "guides/script-tag",
         "guides/blocking",
         "guides/google-consent-mode",
         "guides/lifetime-gpc-tabs",

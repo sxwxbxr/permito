@@ -124,6 +124,21 @@ const statisticsAllowed = useHasConsent("statistics");
 const youtubeAllowed = useHasServiceConsent("youtube");
 ```
 
+## Without a framework (script tag)
+
+For WordPress, Webflow, Astro or plain HTML: one script, a JSON config, the same banner and preference center.
+
+```html
+<script type="application/json" id="permito-config">
+{ "config": { "consentVersion": "1", "language": "de", "categories": [{ "id": "necessary", "required": true }, { "id": "statistics" }] },
+  "privacyPolicyUrl": "/datenschutz" }
+</script>
+<script src="/assets/permito.global.js" data-config="#permito-config"></script>
+<a href="#" data-permito-open>Cookie-Einstellungen</a>
+```
+
+`permito.global.js` ships in `@permitojs/core/dist`. Guide: [Without a framework](https://packages.sweber.dev/permito/docs/guides/script-tag).
+
 ## Without React
 
 ```ts

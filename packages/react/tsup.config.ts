@@ -16,7 +16,7 @@ export default defineConfig([
     // Every export of the main entry is a client component or hook (Next.js App Router).
     banner: { js: '"use client";' },
     async onSuccess() {
-      await copyFile("src/styles.css", "dist/styles.css");
+      await copyFile("../core/src/styles.css", "dist/styles.css");
     },
   },
   {
