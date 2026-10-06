@@ -2,7 +2,13 @@ import { defineConfig } from "tsup";
 
 export default defineConfig([
   {
-    entry: { index: "src/index.ts", ui: "src/ui/index.ts" },
+    entry: {
+      index: "src/index.ts",
+      ui: "src/ui/index.ts",
+      svelte: "src/svelte/index.ts",
+      vue: "src/vue/index.ts",
+    },
+    external: ["vue"],
     format: ["esm", "cjs"],
     dts: true,
     sourcemap: true,

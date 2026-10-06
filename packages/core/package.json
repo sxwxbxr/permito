@@ -42,6 +42,26 @@
         "default": "./dist/ui.cjs"
       }
     },
+    "./svelte": {
+      "import": {
+        "types": "./dist/svelte.d.ts",
+        "default": "./dist/svelte.js"
+      },
+      "require": {
+        "types": "./dist/svelte.d.cts",
+        "default": "./dist/svelte.cjs"
+      }
+    },
+    "./vue": {
+      "import": {
+        "types": "./dist/vue.d.ts",
+        "default": "./dist/vue.js"
+      },
+      "require": {
+        "types": "./dist/vue.d.cts",
+        "default": "./dist/vue.cjs"
+      }
+    },
     "./styles.css": "./dist/styles.css",
     "./permito.global.js": "./dist/permito.global.js",
     "./package.json": "./package.json"
@@ -58,7 +78,9 @@
     "gdpr",
     "dsg",
     "privacy",
-    "consent-mode"
+    "consent-mode",
+    "vue",
+    "svelte"
   ],
   "publishConfig": {
     "access": "public",
@@ -73,8 +95,17 @@
     "jsdom": "^27.0.0",
     "tsup": "^8.5.1",
     "typescript": "^5.9.0",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.3",
+    "vue": "^3.5.0"
   },
   "jsdelivr": "./dist/permito.global.js",
-  "unpkg": "./dist/permito.global.js"
+  "unpkg": "./dist/permito.global.js",
+  "peerDependencies": {
+    "vue": ">=3.3.0"
+  },
+  "peerDependenciesMeta": {
+    "vue": {
+      "optional": true
+    }
+  }
 }

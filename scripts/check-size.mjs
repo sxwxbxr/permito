@@ -16,6 +16,8 @@ const limits = [
     limit: 15_500,
     bundled: true,
   },
+  { name: "@permitojs/core/svelte", entry: "packages/core/dist/svelte.js", limit: 1_000 },
+  { name: "@permitojs/core/vue", entry: "packages/core/dist/vue.js", limit: 1_500 },
   { name: "@permitojs/react", entry: "packages/react/dist/index.js", limit: 4_600 },
 ];
 
@@ -27,7 +29,7 @@ for (const { name, entry, limit, bundled } of limits) {
     minify: true,
     format: "esm",
     platform: "browser",
-    external: bundled ? [] : ["react", "react-dom", "react/jsx-runtime", "@permitojs/core"],
+    external: bundled ? [] : ["react", "react-dom", "react/jsx-runtime", "@permitojs/core", "vue"],
     write: false,
     logLevel: "silent",
   });
