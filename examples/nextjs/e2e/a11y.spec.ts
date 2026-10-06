@@ -5,6 +5,9 @@ const WCAG = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 /** Scans the whole page; the rules are the WCAG 2.2 AA set of axe-core. */
 async function violations(page: Page) {
+  // The dialogs fade in over 180 ms. axe reads the computed colors, so scanning mid-fade
+  // reports contrast problems that are not there once the animation has finished.
+  await page.evaluate(() => Promise.all(document.getAnimations().map((a) => a.finished)));
   const result = await new AxeBuilder({ page }).withTags(WCAG).analyze();
   return result.violations.map((v) => ({
     id: v.id,

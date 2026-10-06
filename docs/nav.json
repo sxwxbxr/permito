@@ -15,6 +15,7 @@
         "guides/svelte",
         "guides/server-frameworks",
         "guides/script-tag",
+        "guides/wordpress",
         "guides/blocking",
         "guides/google-consent-mode",
         "guides/microsoft-matomo",
@@ -33,7 +34,8 @@
         "reference/hooks",
         "reference/core-api",
         "reference/accessibility",
-        "reference/api-status"
+        "reference/api-status",
+        "reference/versioning"
       ]
     },
     {
