@@ -47,6 +47,10 @@ manager.hasServiceConsent("plausible"); // true
 
 `getSnapshot()` returns `{ ready, decision, categories, services, needsConsent, mode }`; `subscribe()` notifies you whenever it changes.
 
+### Without a framework
+
+`@permitojs/core/ui` renders the banner and preference dialog without React (`createConsentUI`), and `dist/permito.global.js` is a drop-in script tag for WordPress, static sites or CMS templates. See the [script tag guide](https://packages.sweber.dev/permito/docs/guides/script-tag).
+
 ## What it does
 
 - **Opt-in by default.** Optional categories are never pre-selected. Opt-out only if you configure it explicitly.

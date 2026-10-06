@@ -14,7 +14,10 @@
     "url": "https://github.com/sxwxbxr/permito/issues"
   },
   "type": "module",
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css",
+    "./dist/permito.global.js"
+  ],
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -29,6 +32,18 @@
         "default": "./dist/index.cjs"
       }
     },
+    "./ui": {
+      "import": {
+        "types": "./dist/ui.d.ts",
+        "default": "./dist/ui.js"
+      },
+      "require": {
+        "types": "./dist/ui.d.cts",
+        "default": "./dist/ui.cjs"
+      }
+    },
+    "./styles.css": "./dist/styles.css",
+    "./permito.global.js": "./dist/permito.global.js",
     "./package.json": "./package.json"
   },
   "files": [
@@ -50,7 +65,7 @@
     "provenance": true
   },
   "scripts": {
-    "build": "tsup",
+    "build": "rm -rf dist && tsup",
     "test": "vitest run",
     "typecheck": "tsc -p tsconfig.json"
   },
@@ -59,5 +74,7 @@
     "tsup": "^8.5.1",
     "typescript": "^5.9.0",
     "vitest": "^5.0.3"
-  }
+  },
+  "jsdelivr": "./dist/permito.global.js",
+  "unpkg": "./dist/permito.global.js"
 }

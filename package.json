@@ -9,7 +9,7 @@
   "scripts": {
     "build": "pnpm -r --filter './packages/**' run build",
     "test": "pnpm -r --filter './packages/**' run test",
-    "check:packages": "attw --pack packages/core --profile node16 && attw --pack packages/react --profile node16 --exclude-entrypoints ./styles.css",
+    "check:packages": "attw --pack packages/core --profile node16 --exclude-entrypoints ./styles.css ./permito.global.js && attw --pack packages/react --profile node16 --exclude-entrypoints ./styles.css",
     "typecheck": "pnpm -r --filter './packages/**' run typecheck",
     "lint": "biome check .",
     "format": "biome format --write .",
