@@ -24,6 +24,7 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
+import { rememberOpener } from "./focus";
 
 export interface PermitoContextValue {
   manager: ConsentManager;
@@ -111,7 +112,10 @@ export function PermitoProvider({
   );
 
   const [preferencesOpen, setPreferencesOpen] = useState(false);
-  const openPreferences = useCallback(() => setPreferencesOpen(true), []);
+  const openPreferences = useCallback(() => {
+    rememberOpener();
+    setPreferencesOpen(true);
+  }, []);
   const closePreferences = useCallback(() => setPreferencesOpen(false), []);
 
   // Integration options are read once, like the config.

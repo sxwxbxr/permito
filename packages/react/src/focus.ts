@@ -9,6 +9,27 @@ export function getFocusable(container: HTMLElement): HTMLElement[] {
   );
 }
 
+let opener: HTMLElement | null = null;
+
+/** Call right before a dialog opens: the opener may be unmounted by the time the dialog's effect runs. */
+export function rememberOpener(): void {
+  opener = document.activeElement as HTMLElement | null;
+}
+
+/** Gives focus back to the opener; re-finds it by `data-permito` if it was removed meanwhile. */
+function restoreFocus(previous: HTMLElement | null, key: string | null): void {
+  if (previous && document.contains(previous)) {
+    previous.focus();
+    return;
+  }
+  if (!key) return;
+  setTimeout(() => {
+    const active = document.activeElement;
+    if (active && active !== document.body) return;
+    document.querySelector<HTMLElement>(`[data-permito="${key}"]`)?.focus();
+  }, 0);
+}
+
 /**
  * Keeps focus inside `ref` while active, closes on Escape, locks page scroll
  * and restores focus to the previously focused element afterwards.
@@ -22,7 +43,10 @@ export function useModalFocus(
     if (!active) return;
     const container = ref.current;
     if (!container) return;
-    const previous = document.activeElement as HTMLElement | null;
+    const previous =
+      opener && opener !== document.body ? opener : (document.activeElement as HTMLElement | null);
+    opener = null;
+    const previousKey = previous?.getAttribute("data-permito") ?? null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     container.focus();
@@ -55,7 +79,7 @@ export function useModalFocus(
     return () => {
       container.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
-      if (previous && document.contains(previous)) previous.focus();
+      restoreFocus(previous, previousKey);
     };
   }, [ref, active, onEscape]);
 }
