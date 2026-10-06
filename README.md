@@ -139,6 +139,10 @@ For WordPress, Webflow, Astro or plain HTML: one script, a JSON config, the same
 
 `permito.global.js` ships in `@permitojs/core/dist`. Guide: [Without a framework](https://packages.sweber.dev/permito/docs/guides/script-tag).
 
+## Vue and Svelte
+
+`@permitojs/core/vue` offers a plugin and composables (`useConsent`, `useHasConsent`), `@permitojs/core/svelte` offers stores (`consentStore`, `categoryStore`). Both build on the same core engine; `vue` is an optional peer dependency and the Svelte entry needs no dependency. Guides: [Vue and Nuxt](https://packages.sweber.dev/permito/docs/guides/vue), [Svelte and SvelteKit](https://packages.sweber.dev/permito/docs/guides/svelte), [server frameworks](https://packages.sweber.dev/permito/docs/guides/server-frameworks).
+
 ## Without React
 
 ```ts
