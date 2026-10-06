@@ -1,5 +1,11 @@
 # @permitojs/core
 
+## 1.0.0
+
+### Major Changes
+
+- d8816a5: 1.0.0: the API listed as stable is now covered by semantic versioning. The code is the same as 0.9.0; see "Versioning and support" and "API status" in the docs. Permito Pro 0.8.0 or later accepts this version; upgrade Pro first.
+
 ## 0.9.0
 
 ### Minor Changes
