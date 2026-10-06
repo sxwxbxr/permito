@@ -1,5 +1,16 @@
 # @permitojs/react
 
+## 0.5.0
+
+### Minor Changes
+
+- 6110259: Add Spanish, Dutch, Polish and Portuguese translations (not yet reviewed by native speakers), `serviceFromTemplate` and `serviceTemplates` for 15 common services (name, provider, privacy policy URL, usual category; no cookie claims), and a gzip size check in CI.
+
+### Patch Changes
+
+- Updated dependencies [6110259]
+  - @permitojs/core@0.5.0
+
 ## 0.4.0
 
 ### Minor Changes
