@@ -400,12 +400,14 @@ export function createConsentUI(options: ConsentUIOptions): ConsentUI {
 
   function openPreferences() {
     if (preferencesOpen) return;
+    // Remember the opener before `update()` removes the floating button.
+    const opener = document.activeElement as HTMLElement | null;
     preferencesOpen = true;
     update();
     const rendered = renderPreferences();
     overlay = rendered.overlay;
     container.append(overlay);
-    releaseFocus = trapFocus(rendered.dialog, closePreferences);
+    releaseFocus = trapFocus(rendered.dialog, closePreferences, opener);
   }
 
   function closePreferences() {

@@ -25,8 +25,13 @@ const FOCUSABLE =
  * Keeps focus inside `container`, closes on Escape, locks page scroll and restores
  * focus afterwards. Returns the cleanup function.
  */
-export function trapFocus(container: HTMLElement, onEscape: () => void): () => void {
-  const previous = document.activeElement as HTMLElement | null;
+export function trapFocus(
+  container: HTMLElement,
+  onEscape: () => void,
+  opener: HTMLElement | null = null,
+): () => void {
+  const previous = opener ?? (document.activeElement as HTMLElement | null);
+  const previousKey = previous?.getAttribute?.("data-permito") ?? null;
   const previousOverflow = document.body.style.overflow;
   document.body.style.overflow = "hidden";
   container.focus();
@@ -59,8 +64,26 @@ export function trapFocus(container: HTMLElement, onEscape: () => void): () => v
   return () => {
     container.removeEventListener("keydown", onKeyDown);
     document.body.style.overflow = previousOverflow;
-    if (previous && document.contains(previous)) previous.focus();
+    restoreFocus(previous, previousKey);
   };
+}
+
+/**
+ * Gives focus back to the element that opened a dialog. If that element was removed while the
+ * dialog was open (the floating preferences button is), the re-created element with the same
+ * `data-permito` marker gets focus, unless focus has already moved somewhere meaningful.
+ */
+function restoreFocus(previous: HTMLElement | null, key: string | null): void {
+  if (previous && document.contains(previous)) {
+    previous.focus();
+    return;
+  }
+  if (!key) return;
+  setTimeout(() => {
+    const active = document.activeElement;
+    if (active && active !== document.body) return;
+    document.querySelector<HTMLElement>(`[data-permito="${key}"]`)?.focus();
+  }, 0);
 }
 
 let idCounter = 0;

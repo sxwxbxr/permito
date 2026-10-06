@@ -19,6 +19,7 @@
         "guides/google-consent-mode",
         "guides/microsoft-matomo",
         "guides/lifetime-gpc-tabs",
+        "guides/csp-sri",
         "guides/theming",
         "guides/translations"
       ]
@@ -29,7 +30,9 @@
         "reference/configuration",
         "reference/components",
         "reference/hooks",
-        "reference/core-api"
+        "reference/core-api",
+        "reference/accessibility",
+        "reference/api-status"
       ]
     },
     {

@@ -71,6 +71,18 @@ describe("createConsentUI", () => {
     expect(youtube?.checked).toBe(true);
   });
 
+  it("gives focus back to the settings button after the preference center closes", async () => {
+    ui = createConsentUI({ config: config() });
+    buttonByText(q('[data-permito="banner"]') as HTMLElement, "Reject all")?.click();
+    await Promise.resolve();
+    q('[data-permito="preferences-button"]')?.focus();
+    ui.openPreferences();
+    expect(q('[data-permito="preferences-button"]')).toBeNull();
+    ui.closePreferences();
+    await new Promise((resolve) => setTimeout(resolve, 10));
+    expect(document.activeElement).toBe(q('[data-permito="preferences-button"]'));
+  });
+
   it("closes on Escape and opens from data-permito-open links", () => {
     document.body.innerHTML = '<a href="#" data-permito-open>Cookie settings</a>';
     ui = createConsentUI({ config: config() });

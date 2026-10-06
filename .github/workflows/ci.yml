@@ -39,7 +39,8 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
-      - run: pnpm --filter nextjs-example exec playwright install --with-deps chromium
+      - run: pnpm --filter nextjs-example exec playwright install --with-deps chromium firefox webkit
       - run: pnpm e2e
         env:
           CI: "true"
+          ALL_BROWSERS: "1"
