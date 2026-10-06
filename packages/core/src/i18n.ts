@@ -248,12 +248,224 @@ const it: Translations = {
   },
 };
 
+const es: Translations = {
+  bannerTitle: "Tu privacidad",
+  bannerDescription:
+    "Utilizamos cookies y tecnologías similares. Algunas son necesarias para el funcionamiento del sitio, otras nos ayudan a mejorarlo o a mostrar contenido de terceros. Tú decides cuáles permitir y puedes cambiar tu elección en cualquier momento.",
+  acceptAll: "Aceptar todo",
+  rejectAll: "Rechazar todo",
+  customize: "Ajustes",
+  privacyPolicy: "Política de privacidad",
+  imprint: "Aviso legal",
+  preferencesTitle: "Ajustes de privacidad",
+  preferencesDescription:
+    "Elige qué categorías quieres permitir. Las tecnologías necesarias están siempre activas.",
+  save: "Guardar selección",
+  close: "Cerrar",
+  alwaysActive: "Siempre activo",
+  services: "Servicios",
+  provider: "Proveedor",
+  purpose: "Finalidad",
+  cookies: "Cookies",
+  duration: "Duración",
+  openPreferences: "Abrir los ajustes de privacidad",
+  embedTitle: "{service} está bloqueado",
+  embedDescription:
+    "Este contenido lo ofrece {provider}. Al cargarlo, se transmiten datos a {provider}.",
+  embedLoadOnce: "Cargar una vez",
+  embedAlwaysAllow: "Permitir siempre",
+  categories: {
+    necessary: {
+      name: "Necesarias",
+      description:
+        "Imprescindibles para las funciones básicas del sitio, por ejemplo para recordar tu elección.",
+    },
+    preferences: {
+      name: "Preferencias",
+      description: "Recuerdan ajustes como el idioma o la región para adaptar el sitio a ti.",
+    },
+    statistics: {
+      name: "Estadísticas",
+      description: "Nos ayudan a entender cómo se usa el sitio para poder mejorarlo.",
+    },
+    marketing: {
+      name: "Marketing",
+      description: "Se usan para que la publicidad sea más relevante y para medir su eficacia.",
+    },
+    security: {
+      name: "Seguridad",
+      description: "Protegen el sitio y tu cuenta frente a abusos.",
+    },
+  },
+};
+
+const nl: Translations = {
+  bannerTitle: "Jouw privacy",
+  bannerDescription:
+    "Wij gebruiken cookies en vergelijkbare technologieën. Sommige zijn nodig om de website te laten werken, andere helpen ons de website te verbeteren of content van derden te tonen. Jij bepaalt welke je toestaat en je kunt je keuze op elk moment wijzigen.",
+  acceptAll: "Alles accepteren",
+  rejectAll: "Alles weigeren",
+  customize: "Instellingen",
+  privacyPolicy: "Privacybeleid",
+  imprint: "Colofon",
+  preferencesTitle: "Privacy-instellingen",
+  preferencesDescription:
+    "Kies welke categorieën je wilt toestaan. Noodzakelijke technologieën zijn altijd actief.",
+  save: "Selectie opslaan",
+  close: "Sluiten",
+  alwaysActive: "Altijd actief",
+  services: "Diensten",
+  provider: "Aanbieder",
+  purpose: "Doel",
+  cookies: "Cookies",
+  duration: "Bewaartermijn",
+  openPreferences: "Privacy-instellingen openen",
+  embedTitle: "{service} is geblokkeerd",
+  embedDescription:
+    "Deze content wordt aangeboden door {provider}. Door te laden worden gegevens naar {provider} verzonden.",
+  embedLoadOnce: "Eenmalig laden",
+  embedAlwaysAllow: "Altijd toestaan",
+  categories: {
+    necessary: {
+      name: "Noodzakelijk",
+      description:
+        "Vereist voor de basisfuncties van de website, bijvoorbeeld om je keuze te onthouden.",
+    },
+    preferences: {
+      name: "Voorkeuren",
+      description:
+        "Onthouden instellingen zoals taal of regio om de website aan jou aan te passen.",
+    },
+    statistics: {
+      name: "Statistieken",
+      description:
+        "Helpen ons te begrijpen hoe de website wordt gebruikt, zodat we hem kunnen verbeteren.",
+    },
+    marketing: {
+      name: "Marketing",
+      description:
+        "Worden gebruikt om advertenties relevanter te maken en de effectiviteit te meten.",
+    },
+    security: {
+      name: "Beveiliging",
+      description: "Beschermen de website en je account tegen misbruik.",
+    },
+  },
+};
+
+const pl: Translations = {
+  bannerTitle: "Twoja prywatność",
+  bannerDescription:
+    "Używamy plików cookie i podobnych technologii. Niektóre są niezbędne do działania witryny, inne pomagają nam ją ulepszać lub wyświetlać treści podmiotów trzecich. To Ty decydujesz, które z nich zaakceptujesz, i możesz zmienić swój wybór w dowolnym momencie.",
+  acceptAll: "Zaakceptuj wszystkie",
+  rejectAll: "Odrzuć wszystkie",
+  customize: "Ustawienia",
+  privacyPolicy: "Polityka prywatności",
+  imprint: "Informacje prawne",
+  preferencesTitle: "Ustawienia prywatności",
+  preferencesDescription:
+    "Wybierz, które kategorie chcesz zaakceptować. Technologie niezbędne są zawsze aktywne.",
+  save: "Zapisz wybór",
+  close: "Zamknij",
+  alwaysActive: "Zawsze aktywne",
+  services: "Usługi",
+  provider: "Dostawca",
+  purpose: "Cel",
+  cookies: "Pliki cookie",
+  duration: "Okres przechowywania",
+  openPreferences: "Otwórz ustawienia prywatności",
+  embedTitle: "{service} jest zablokowany",
+  embedDescription:
+    "Ta treść pochodzi od {provider}. Po jej załadowaniu dane są przekazywane do {provider}.",
+  embedLoadOnce: "Załaduj jednorazowo",
+  embedAlwaysAllow: "Zawsze zezwalaj",
+  categories: {
+    necessary: {
+      name: "Niezbędne",
+      description:
+        "Wymagane do podstawowych funkcji witryny, na przykład do zapamiętania Twojego wyboru.",
+    },
+    preferences: {
+      name: "Preferencje",
+      description:
+        "Zapamiętują ustawienia, takie jak język lub region, aby dopasować witrynę do Ciebie.",
+    },
+    statistics: {
+      name: "Statystyka",
+      description: "Pomagają nam zrozumieć, jak korzysta się z witryny, abyśmy mogli ją ulepszać.",
+    },
+    marketing: {
+      name: "Marketing",
+      description: "Służą do wyświetlania trafniejszych reklam i mierzenia ich skuteczności.",
+    },
+    security: {
+      name: "Bezpieczeństwo",
+      description: "Chronią witrynę i Twoje konto przed nadużyciami.",
+    },
+  },
+};
+
+const pt: Translations = {
+  bannerTitle: "A sua privacidade",
+  bannerDescription:
+    "Utilizamos cookies e tecnologias semelhantes. Alguns são necessários para o funcionamento do site, outros ajudam-nos a melhorá-lo ou a mostrar conteúdos de terceiros. É você quem decide quais permitir e pode alterar a sua escolha a qualquer momento.",
+  acceptAll: "Aceitar tudo",
+  rejectAll: "Rejeitar tudo",
+  customize: "Definições",
+  privacyPolicy: "Política de privacidade",
+  imprint: "Informações legais",
+  preferencesTitle: "Definições de privacidade",
+  preferencesDescription:
+    "Escolha as categorias que pretende permitir. As tecnologias necessárias estão sempre ativas.",
+  save: "Guardar seleção",
+  close: "Fechar",
+  alwaysActive: "Sempre ativo",
+  services: "Serviços",
+  provider: "Fornecedor",
+  purpose: "Finalidade",
+  cookies: "Cookies",
+  duration: "Duração",
+  openPreferences: "Abrir as definições de privacidade",
+  embedTitle: "{service} está bloqueado",
+  embedDescription:
+    "Este conteúdo é fornecido por {provider}. Ao carregá-lo, são transmitidos dados para {provider}.",
+  embedLoadOnce: "Carregar uma vez",
+  embedAlwaysAllow: "Permitir sempre",
+  categories: {
+    necessary: {
+      name: "Necessários",
+      description:
+        "Indispensáveis para as funções básicas do site, por exemplo para memorizar a sua escolha.",
+    },
+    preferences: {
+      name: "Preferências",
+      description: "Memorizam definições como o idioma ou a região para adaptar o site a si.",
+    },
+    statistics: {
+      name: "Estatísticas",
+      description: "Ajudam-nos a perceber como o site é utilizado para o podermos melhorar.",
+    },
+    marketing: {
+      name: "Marketing",
+      description: "Servem para tornar a publicidade mais relevante e medir a sua eficácia.",
+    },
+    security: {
+      name: "Segurança",
+      description: "Protegem o site e a sua conta contra abusos.",
+    },
+  },
+};
+
 export const translations: Readonly<Record<string, Translations>> = {
   de,
   "de-CH": mapStrings(de, swissify),
   en,
+  es,
   fr,
   it,
+  nl,
+  pl,
+  pt,
 };
 
 export const DEFAULT_LANGUAGE = "en";

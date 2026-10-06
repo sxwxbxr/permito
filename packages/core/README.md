@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/@permitojs/core.svg)](https://www.npmjs.com/package/@permitojs/core)
 [![license](https://img.shields.io/npm/l/@permitojs/core.svg)](https://github.com/sxwxbxr/permito/blob/main/LICENSE)
 
-Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2 and translations for DE, DE-CH, EN, FR and IT. No network calls, no tracking, no dependencies.
+Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2 and translations for DE, DE-CH, EN, FR, IT, ES, NL, PL and PT. No network calls, no tracking, no dependencies.
 
 Part of [Permito](https://packages.sweber.dev/permito/docs), a privacy-first consent toolkit. For React and Next.js use [`@permitojs/react`](https://www.npmjs.com/package/@permitojs/react), which builds on this package.
 

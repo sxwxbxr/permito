@@ -13,7 +13,7 @@ Privacy-first consent toolkit for React and Next.js. Accessible banner and prefe
 
 | Package | Description |
 |---|---|
-| [`@permitojs/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, Microsoft UET, Clarity and Matomo bridges, translations (DE, DE-CH, EN, FR, IT) |
+| [`@permitojs/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, Microsoft UET, Clarity and Matomo bridges, translations (DE, DE-CH, EN, FR, IT, ES, NL, PL, PT) |
 | [`@permitojs/react`](packages/react) | React components and hooks, Next.js App Router ready |
 
 ## Principles
@@ -162,7 +162,7 @@ await manager.update({ statistics: true });
 | `categories` | `{ id, name?, description?, required? }`. Built-in texts exist for `necessary`, `preferences`, `statistics`, `marketing`, `security`. |
 | `services` | `{ id, name, category, provider?, purpose?, cookies?, privacyPolicyUrl?, requiresConsent? }` |
 | `storage` | `createCookieStorage()` (default), `createLocalStorage()`, `createSessionStorage()`, `createMemoryStorage()` or your own `{ get, set, clear }`. |
-| `language` | `de`, `de-CH`, `en`, `fr`, `it`. Override any text via `translations` on the provider. |
+| `language` | `de`, `de-CH`, `en`, `fr`, `it`, `es`, `nl`, `pl`, `pt`. Override any text via `translations` on the provider. |
 | `mode` / `region` / `regionRules` | `"opt-in"` (default) or `"opt-out"`. Region is supplied by you; Permito never geolocates. |
 | `initialState` | Decision read on the server, see above. |
 
