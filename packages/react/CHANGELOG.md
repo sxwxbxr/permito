@@ -1,5 +1,16 @@
 # @permitojs/react
 
+## 0.8.0
+
+### Minor Changes
+
+- 1442975: API freeze candidate: tests pin the runtime exports of every entry point, new migration guide, API status page updated. `@permitojs/react` now also re-exports `createSessionStorage`.
+
+### Patch Changes
+
+- Updated dependencies [1442975]
+  - @permitojs/core@0.8.0
+
 ## 0.7.0
 
 ### Minor Changes
