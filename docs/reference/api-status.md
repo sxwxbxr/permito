@@ -1,11 +1,11 @@
 ---
 title: API status
-description: Which parts of the API are stable, which may still change before 1.0, and what is deprecated.
+description: Which parts of the API are stable, what is not part of the promise, and what is deprecated.
 ---
 
-Permito follows semantic versioning. Version 0.9 is the release candidate: the runtime exports of every entry point are pinned by a test, and everything listed under "Stable" is frozen. Until 1.0.0 only bug fixes and wording change. See [Migrating to 1.0](../guides/migration.md) and [Versioning and support](versioning.md).
+Permito follows semantic versioning. Since 1.0.0 everything listed under "Stable" is frozen: the runtime exports of every entry point are pinned by a test, and a change to them needs a new major version. See [Migrating to 1.0](../guides/migration.md) and [Versioning and support](versioning.md).
 
-## Stable (frozen at 1.0)
+## Stable (frozen since 1.0)
 
 - `createConsentManager` and its members: `getSnapshot`, `subscribe`, `on`, `hasConsent`, `hasServiceConsent`, `acceptAll`, `rejectAll`, `update`, `setServiceConsent`, `reset`, `exportState`, `importState`, `destroy`, and the `ConsentConfig` and `ConsentSnapshot` shapes.
 - The stored decision (`ConsentState`, schema 1). Changing it would invalidate stored decisions, so it only changes with a schema bump and a migration.

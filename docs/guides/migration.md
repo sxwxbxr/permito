@@ -1,9 +1,9 @@
 ---
 title: Migrating to 1.0
-description: What changed between 0.x releases and what to check before 1.0.
+description: What changed between 0.x releases and what to check when you move to 1.0.
 ---
 
-There are no breaking changes between 0.1.0 and 0.9.0. Every release added to the API, and the stored decision format (schema 1) has not changed, so visitors keep their choice when you upgrade. Three behavior details are worth knowing.
+There are no breaking changes between 0.1.0 and 1.0.0. Version 1.0.0 has the same code as 0.9.0; it adds the stability promise. Every release added to the API, and the stored decision format (schema 1) has not changed, so visitors keep their choice when you upgrade. Three behavior details are worth knowing.
 
 | Since | Detail | What to check |
 |---|---|---|
@@ -11,12 +11,12 @@ There are no breaking changes between 0.1.0 and 0.9.0. Every release added to th
 | 0.3.0 | The stylesheet lives in `@permitojs/core/styles.css`. | `@permitojs/react/styles.css` still works. No change needed. |
 | 0.5.0 | `es`, `nl`, `pl` and `pt` are built in. | A site that used these language codes with its own `translations` keeps its texts, because overrides win. Without overrides the built-in texts apply now instead of English. |
 
-## Before 1.0
+## Moving to 1.0
 
-1.0.0 freezes the API listed as stable on the [API status](../reference/api-status.md) page. The runtime exports of every entry point are pinned by a test, so a change cannot slip in unnoticed. What you can do now:
+1.0.0 freezes the API listed as stable on the [API status](../reference/api-status.md) page. The runtime exports of every entry point are pinned by a test, so a change cannot slip in unnoticed. To upgrade:
 
-- Read the "may still change" list on the API status page and decide which of those APIs you rely on.
-- Pin `@permitojs/core` and `@permitojs/react` to the same version. They are released together.
+- Upgrade Permito Pro first if you use it (0.8.0 or later accepts Permito 1.x), then `@permitojs/core` and `@permitojs/react`.
+- Pin both to the same version. They are released together.
 - Run your own accessibility check against your theme and texts, see [Accessibility](../reference/accessibility.md).
 
 ## After 1.0
@@ -25,4 +25,4 @@ Breaking changes only come with a new major version, with a migration note here.
 
 ## Permito Pro
 
-The Pro packages accept every Permito 0.x release as a peer. Before Permito 1.0.0, Pro widens the range to include 1.x. Upgrade Pro first, then Permito.
+Permito Pro 0.8.0 and later accept Permito 0.1 up to, but not including, 2.0 as a peer. Older Pro versions stop at 1.0.0: upgrade Pro first, then Permito.
