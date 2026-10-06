@@ -6,6 +6,8 @@ export {
   type ConsentModeDefaultOptions,
   type ConsentState,
   getConsentModeDefaultScript,
+  getMatomoDefaultScript,
+  getMicrosoftUetDefaultScript,
   isConsentState,
   parseConsentState,
   readConsentFromCookieHeader,

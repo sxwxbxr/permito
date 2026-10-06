@@ -1,4 +1,19 @@
 export {
+  type ClarityOptions,
+  connectIntegrations,
+  connectMatomo,
+  connectMicrosoftClarity,
+  connectMicrosoftUet,
+  getMatomoDefaultScript,
+  getMicrosoftUetDefaultScript,
+  type IntegrationOptions,
+  type MatomoOptions,
+  type MicrosoftUetOptions,
+  pushIntegrationDefaults,
+  pushMatomoDefault,
+  pushMicrosoftUetDefault,
+} from "./bridges";
+export {
   type ConnectConsentModeOptions,
   type ConsentModeDefaultOptions,
   type ConsentModeMapping,

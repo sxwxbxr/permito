@@ -1,3 +1,4 @@
+import { connectIntegrations, type IntegrationOptions } from "../bridges";
 import { type ConnectConsentModeOptions, connectGoogleConsentMode } from "../consent-mode";
 import { getTranslations, localize, type TranslationOverrides, type Translations } from "../i18n";
 import { type ConsentManager, createConsentManager } from "../manager";
@@ -8,7 +9,7 @@ import { h, nextId, trapFocus } from "./dom";
 
 export type ConsentUIPosition = "bottom" | "top" | "bottom-left" | "bottom-right" | "center";
 
-export interface ConsentUIOptions {
+export interface ConsentUIOptions extends IntegrationOptions {
   /** Consent configuration. Ignored when `manager` is given. */
   config?: ConsentConfig;
   /** Use an existing manager instead of creating one from `config`. */
@@ -84,6 +85,9 @@ export function createConsentUI(options: ConsentUIOptions): ConsentUI {
         options.googleConsentMode === true ? {} : options.googleConsentMode,
       ),
     );
+  }
+  if (options.microsoftUet || options.clarity || options.matomo) {
+    cleanups.push(connectIntegrations(manager, options));
   }
   if (options.blockedElements !== false) {
     cleanups.push(
