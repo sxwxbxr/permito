@@ -1,6 +1,6 @@
 {
   "name": "@permitojs/core",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Privacy-first, framework-agnostic consent engine. No network calls, no tracking.",
   "license": "MIT",
   "author": "Seya Weber (https://github.com/sxwxbxr)",
