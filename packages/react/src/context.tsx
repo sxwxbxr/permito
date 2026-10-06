@@ -6,9 +6,11 @@ import {
   type ConsentManager,
   type ConsentSnapshot,
   connectGoogleConsentMode,
+  connectIntegrations,
   createConsentManager,
   createMemoryStorage,
   getTranslations,
+  type IntegrationOptions,
   type TranslationOverrides,
   type Translations,
 } from "@permitojs/core";
@@ -60,6 +62,12 @@ export interface PermitoProviderProps {
   googleConsentMode?: boolean | ConnectConsentModeOptions;
   /** Activate `<script type="text/plain" data-consent-…>` markup after consent. */
   blockedElements?: boolean | ActivateOptions;
+  /** Forward the decision to Microsoft UET. Render `getMicrosoftUetDefaultScript()` in `<head>` yourself. */
+  microsoftUet?: IntegrationOptions["microsoftUet"];
+  /** Forward the decision to Microsoft Clarity (`consentv2`). */
+  clarity?: IntegrationOptions["clarity"];
+  /** Forward the decision to Matomo. Render `getMatomoDefaultScript()` before the Matomo snippet. */
+  matomo?: IntegrationOptions["matomo"];
   children?: ReactNode;
 }
 
@@ -77,6 +85,9 @@ export function PermitoProvider({
   portalContainer,
   googleConsentMode,
   blockedElements,
+  microsoftUet,
+  clarity,
+  matomo,
   children,
 }: PermitoProviderProps) {
   const [manager] = useState(() => externalManager ?? createConsentManager(config));
@@ -119,6 +130,9 @@ export function PermitoProvider({
     if (!blockedOptions) return;
     return activateBlockedElements(manager, blockedOptions);
   }, [manager, blockedOptions]);
+
+  const [integrations] = useState<IntegrationOptions>(() => ({ microsoftUet, clarity, matomo }));
+  useEffect(() => connectIntegrations(manager, integrations), [manager, integrations]);
 
   const language = manager.config.language;
   const t = useMemo(() => getTranslations(language, translations), [language, translations]);

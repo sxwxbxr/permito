@@ -81,6 +81,7 @@ Besides `config`, the JSON accepts:
 | `serviceToggles` | `true` | Switches per service in the dialog. |
 | `googleConsentMode` | `false` | Send Consent Mode v2 updates. |
 | `consentModeDefault` | `false` | Push the Consent Mode default (`denied`) immediately. Load the script without `defer` in `<head>`, before the Google tag. |
+| `microsoftUet`, `clarity`, `matomo` | `false` | Forward the decision to Microsoft UET, Microsoft Clarity and Matomo. See [Microsoft UET, Clarity and Matomo](/permito/docs/guides/microsoft-matomo). |
 | `blockedElements` | `true` | Activate blocked markup after consent. |
 | `injectStyles` | `true` | Insert the default stylesheet. Set `false` and load `dist/styles.css` yourself, e.g. for a strict CSP. |
 | `styleNonce` | none | CSP nonce for the injected `<style>`. |

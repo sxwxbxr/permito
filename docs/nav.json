@@ -14,6 +14,7 @@
         "guides/script-tag",
         "guides/blocking",
         "guides/google-consent-mode",
+        "guides/microsoft-matomo",
         "guides/lifetime-gpc-tabs",
         "guides/theming",
         "guides/translations"

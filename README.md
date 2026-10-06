@@ -7,13 +7,13 @@
 
 **Documentation: [packages.sweber.dev/permito/docs](https://packages.sweber.dev/permito/docs) · Live demo: [packages.sweber.dev/permito/demo](https://packages.sweber.dev/permito/demo)**
 
-Privacy-first consent toolkit for React and Next.js. Accessible banner and preference center, consent gates for scripts and embeds, Google Consent Mode v2. No network calls, no tracking, no dark patterns.
+Privacy-first consent toolkit for React and Next.js. Accessible banner and preference center, consent gates for scripts and embeds, Google Consent Mode v2, plus consent bridges for Microsoft UET, Microsoft Clarity and Matomo. No network calls, no tracking, no dark patterns.
 
 > **Permito is not legal advice.** It is technical consent infrastructure. It does not guarantee compliance with the GDPR, the Swiss revDSG or any other law, and it never decides on its own whether a service needs consent. You, the operator, are responsible for that assessment.
 
 | Package | Description |
 |---|---|
-| [`@permitojs/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, translations (DE, DE-CH, EN, FR, IT) |
+| [`@permitojs/core`](packages/core) | Framework-agnostic consent engine: state, storage, events, script activation, Google Consent Mode v2, Microsoft UET, Clarity and Matomo bridges, translations (DE, DE-CH, EN, FR, IT) |
 | [`@permitojs/react`](packages/react) | React components and hooks, Next.js App Router ready |
 
 ## Principles

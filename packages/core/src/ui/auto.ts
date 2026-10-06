@@ -5,6 +5,8 @@
  *   <script type="application/json" id="permito-config">{ "config": { … }, "privacyPolicyUrl": "/datenschutz" }</script>
  *   <script src="…/permito.global.js" data-config="#permito-config"></script>
  */
+
+import { pushIntegrationDefaults } from "../bridges";
 import {
   type ConsentModeDefaultOptions,
   DEFAULT_CONSENT_MODE_MAPPING,
@@ -47,6 +49,8 @@ function init(options: AutoOptions): ConsentUI {
   instance?.destroy();
   const { consentModeDefault, ...uiOptions } = options;
   if (consentModeDefault) pushConsentDefault(consentModeDefault === true ? {} : consentModeDefault);
+  // UET and Matomo wait for consent; this must happen before their tags run.
+  pushIntegrationDefaults(uiOptions);
   // Create the manager now (reads the cookie synchronously), render once the body exists.
   const manager = uiOptions.manager ?? createConsentManager(uiOptions.config as never);
   const start = () => {
