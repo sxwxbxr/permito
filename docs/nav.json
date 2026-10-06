@@ -21,7 +21,8 @@
         "guides/lifetime-gpc-tabs",
         "guides/csp-sri",
         "guides/theming",
-        "guides/translations"
+        "guides/translations",
+        "guides/migration"
       ]
     },
     {
