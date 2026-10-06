@@ -1,6 +1,6 @@
 {
   "name": "@permitojs/react",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "Accessible, privacy-first consent banner, preference center and consent gates for React and Next.js.",
   "license": "MIT",
   "author": "Seya Weber (https://github.com/sxwxbxr)",
