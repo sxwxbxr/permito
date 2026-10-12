@@ -3,6 +3,7 @@
 import {
   ConsentBanner,
   type ConsentState,
+  type ConsentStateV1,
   PermitoProvider,
   PreferenceCenter,
   PreferencesButton,
@@ -14,7 +15,7 @@ export function Providers({
   initialState,
   children,
 }: {
-  initialState: ConsentState | null;
+  initialState: ConsentState | ConsentStateV1 | null;
   children: ReactNode;
 }) {
   return (

@@ -4,6 +4,7 @@ export {
   type ConsentManager,
   type ConsentService,
   type ConsentState,
+  type ConsentStateV1,
   createConsentManager,
   createCookieStorage,
   createLocalStorage,

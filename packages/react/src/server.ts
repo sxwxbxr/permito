@@ -5,6 +5,7 @@
 export {
   type ConsentModeDefaultOptions,
   type ConsentState,
+  type ConsentStateV1,
   getConsentModeDefaultScript,
   getMatomoDefaultScript,
   getMicrosoftUetDefaultScript,

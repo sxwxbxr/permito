@@ -20,7 +20,7 @@ Permito 2.0 adds **purposes** and a **webhook** for withdrawal across systems, a
 | `ConsentSnapshot` has a required `purposes` field. | Code that builds or mocks a snapshot. | Add `purposes`. |
 | `ConsentManager` has two new members (`hasPurposeConsent`, `setPurposeConsent`). | Code that implements or mocks the manager. | Add them. |
 | The events `consent_updated` and `consent_revoked` carry `origin`, `consent_revoked` also `purposes`. | Only code that builds events by hand. Listeners keep working. | None. |
-| `readConsentFromCookieHeader`, `parseConsentState` and `isConsentState` can return or accept a schema 1 decision. | TypeScript code that assumed `ConsentState`. | Pass the result to `initialState` as before, or call `migrateConsentState`. |
+| `readConsentFromCookieHeader`, `parseConsentState` and `isConsentState` can return or accept a schema 1 decision. | TypeScript code that assumed `ConsentState`, for example a prop typed `initialState: ConsentState \| null` that receives the cookie. | Type it `ConsentState \| ConsentStateV1 \| null` (both are exported by `@permitojs/core` and `@permitojs/react`), or call `migrateConsentState`. Runtime behavior is unchanged. |
 | Node 22+ | Builds and servers on Node 20. | Upgrade Node. |
 
 ## What stays the same
