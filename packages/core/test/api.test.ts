@@ -15,12 +15,14 @@ describe("public API", () => {
   it("@permitojs/core", () => {
     expect(names(core)).toEqual([
       "BlockedUrlError",
+      "CONSENT_WEBHOOK_FORMAT",
       "ConsentConfigError",
       "DEFAULT_CONSENT_MODE_MAPPING",
       "DEFAULT_LANGUAGE",
       "DEFAULT_MAX_AGE_SECONDS",
       "DEFAULT_STORAGE_KEY",
       "activateBlockedElements",
+      "connectConsentWebhook",
       "connectGoogleConsentMode",
       "connectIntegrations",
       "connectMatomo",
@@ -40,7 +42,9 @@ describe("public API", () => {
       "isUrlAllowed",
       "loadScript",
       "localize",
+      "migrateConsentState",
       "parseConsentState",
+      "parseConsentWebhookPayload",
       "pushIntegrationDefaults",
       "pushMatomoDefault",
       "pushMicrosoftUetDefault",
@@ -49,6 +53,7 @@ describe("public API", () => {
       "resetLoadedScripts",
       "resolveLanguage",
       "resolveMode",
+      "resolvePurposes",
       "serializeConsentState",
       "serviceFromTemplate",
       "serviceTemplates",
@@ -66,11 +71,18 @@ describe("public API", () => {
       "categoryStore",
       "consentStore",
       "needsConsentStore",
+      "purposeStore",
       "serviceStore",
     ]);
   });
 
   it("@permitojs/core/vue", () => {
-    expect(names(vue)).toEqual(["permito", "useConsent", "useHasConsent", "useHasServiceConsent"]);
+    expect(names(vue)).toEqual([
+      "permito",
+      "useConsent",
+      "useHasConsent",
+      "useHasPurposeConsent",
+      "useHasServiceConsent",
+    ]);
   });
 });

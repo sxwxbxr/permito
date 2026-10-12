@@ -20,9 +20,11 @@
         "guides/google-consent-mode",
         "guides/microsoft-matomo",
         "guides/lifetime-gpc-tabs",
+        "guides/revocation-across-systems",
         "guides/csp-sri",
         "guides/theming",
         "guides/translations",
+        "guides/migration-2",
         "guides/migration"
       ]
     },

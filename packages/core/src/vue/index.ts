@@ -30,6 +30,7 @@ export interface UseConsentResult {
   snapshot: Readonly<ShallowRef<ConsentSnapshot>>;
   hasConsent: (category: string) => boolean;
   hasServiceConsent: (serviceId: string) => boolean;
+  hasPurposeConsent: (purposeId: string) => boolean;
   acceptAll: () => Promise<void>;
   rejectAll: () => Promise<void>;
   update: (categories: Record<string, boolean>, options?: UpdateOptions) => Promise<void>;
@@ -66,6 +67,7 @@ export function useConsent(manager?: ConsentManager): UseConsentResult {
     // Reading `snapshot.value` inside the function keeps templates and computed values reactive.
     hasConsent: (category) => snapshot.value.categories[category] === true,
     hasServiceConsent: (serviceId) => snapshot.value.services[serviceId] === true,
+    hasPurposeConsent: (purposeId) => snapshot.value.purposes[purposeId] === true,
     acceptAll: () => m.acceptAll("api"),
     rejectAll: () => m.rejectAll("api"),
     update: (categories, options) => m.update(categories, options),
@@ -88,4 +90,13 @@ export function useHasServiceConsent(
 ): ComputedRef<boolean> {
   const snapshot = track(resolve(manager));
   return computed(() => snapshot.value.services[serviceId] === true);
+}
+
+/** `true` while consent is granted for the purpose. */
+export function useHasPurposeConsent(
+  purposeId: string,
+  manager?: ConsentManager,
+): ComputedRef<boolean> {
+  const snapshot = track(resolve(manager));
+  return computed(() => snapshot.value.purposes[purposeId] === true);
 }

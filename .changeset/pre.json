@@ -1,0 +1,9 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "@permitojs/core": "1.0.0",
+    "@permitojs/react": "1.0.0"
+  },
+  "changesets": []
+}

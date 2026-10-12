@@ -7,8 +7,9 @@ const require = createRequire(import.meta.url);
 const { build } = require("esbuild");
 
 // Grenzen in Bytes (gzip). Mit etwas Luft über dem Ist-Wert; wer sie erhöht, begründet es im PR.
+// 2.0: core 11'000 auf 12'500 (Zwecke, Webhook, Zustand v2; der Webhook ist per Tree-Shaking optional).
 const limits = [
-  { name: "@permitojs/core", entry: "packages/core/dist/index.js", limit: 11_000 },
+  { name: "@permitojs/core", entry: "packages/core/dist/index.js", limit: 12_500 },
   { name: "@permitojs/core/ui", entry: "packages/core/dist/ui.js", limit: 14_500 },
   {
     name: "permito.global.js (script tag)",

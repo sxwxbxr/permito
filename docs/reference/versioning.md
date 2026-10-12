@@ -9,7 +9,7 @@ Permito follows [semantic versioning](https://semver.org). From 1.0.0:
 
 - **Patch** releases (1.0.x) fix bugs and correct wording. They never change the stable API.
 - **Minor** releases (1.x.0) add features. They never remove or change something listed as stable in [API status](api-status.md). Service templates and translations can be added; the default category of an existing template does not change.
-- **Major** releases (2.0.0) can remove or change the stable API. Everything removed was marked `@deprecated` in at least one earlier minor release and is named in the release notes with a migration hint.
+- **Major** releases (2.0.0, 3.0.0) can remove or change the stable API. Everything removed was marked `@deprecated` in at least one earlier minor release and is named in the release notes with a migration hint.
 
 `@permitojs/core` and `@permitojs/react` share one version number and are released together.
 
@@ -17,7 +17,7 @@ The stored decision has its own schema number. A change to it comes with a migra
 
 ## Support
 
-The latest minor release of the current major version gets bug fixes and security fixes. When a new major version appears, the last minor release of the previous major keeps getting security fixes for 6 months.
+The latest minor release of the current major version gets bug fixes and security fixes. When a new major version appears, the last minor release of the previous major keeps getting bug fixes and security fixes for 12 months from the day the new major is released. 1.x is supported until 12 months after the release of 2.0.0.
 
 There is no response-time guarantee for free issues. Permito Pro has its own terms.
 

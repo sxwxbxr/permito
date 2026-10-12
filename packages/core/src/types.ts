@@ -29,12 +29,29 @@ export interface ConsentCategoryDefinition {
   legalBasis?: string;
 }
 
+/**
+ * A processing purpose, the unit that systems outside the browser (CRM, e-mail tool, analytics
+ * backend) act on. Every purpose belongs to one category and has a stable id that is identical in the
+ * browser, in the stored decision and in the webhook payload.
+ *
+ * Without `purposes` in the config, each category becomes one purpose with the same id.
+ */
+export interface ConsentPurposeDefinition {
+  id: string;
+  /** The category this purpose belongs to. Granting or declining the category sets the purpose. */
+  category: CategoryId;
+  name?: LocalizedText;
+  description?: LocalizedText;
+}
+
 export interface ConsentService {
   id: string;
   name: string;
   /** Category this service belongs to. */
   category: CategoryId;
   provider?: string;
+  /** Ids of the purposes this service serves. It runs only while all of them are granted. */
+  purposes?: string[];
   purpose?: LocalizedText;
   description?: LocalizedText;
   cookies?: CookieDefinition[];
@@ -55,17 +72,32 @@ export interface RegionRule {
 
 export type ConsentSource = "banner" | "preferences" | "api" | "import" | "embed";
 
+/** Consent decision as stored by Permito 1.x. Read and migrated automatically, never written. */
+export interface ConsentStateV1 {
+  schema: 1;
+  version: string;
+  policyVersion?: string;
+  timestamp: string;
+  categories: Record<string, boolean>;
+  services: Record<string, boolean>;
+  source: ConsentSource;
+  region?: string;
+  language?: string;
+}
+
 /** A stored consent decision. Contains no personal data. */
 export interface ConsentState {
   /** Storage schema version, used for migrations. */
-  schema: 1;
+  schema: 2;
   /** The operator's consent configuration version. A mismatch triggers a new prompt. */
   version: string;
   policyVersion?: string;
   /** ISO 8601 timestamp of the decision. */
   timestamp: string;
   categories: Record<string, boolean>;
-  /** Explicit per-service overrides. Services without an entry follow their category. */
+  /** Effective consent per purpose at the time of the decision. */
+  purposes: Record<string, boolean>;
+  /** Explicit per-service overrides. Services without an entry follow their category and purposes. */
   services: Record<string, boolean>;
   source: ConsentSource;
   region?: string;
@@ -73,13 +105,15 @@ export interface ConsentState {
 }
 
 export interface ConsentStorage {
-  get(): ConsentState | null | Promise<ConsentState | null>;
+  get(): ConsentState | ConsentStateV1 | null | Promise<ConsentState | ConsentStateV1 | null>;
   set(state: ConsentState): void | Promise<void>;
   clear(): void | Promise<void>;
 }
 
 export interface ConsentConfig {
   categories: ConsentCategoryDefinition[];
+  /** Purposes behind the categories. Default: one purpose per category, with the category's id. */
+  purposes?: ConsentPurposeDefinition[];
   services?: ConsentService[];
   /** Bump this whenever categories or services change in a way that needs fresh consent. */
   consentVersion: string;
@@ -93,7 +127,7 @@ export interface ConsentConfig {
   regionRules?: Record<string, RegionRule>;
   language?: string;
   /** Previously stored state, e.g. parsed from the request cookie during SSR. */
-  initialState?: ConsentState | null;
+  initialState?: ConsentState | ConsentStateV1 | null;
   /**
    * Ask again once a decision is older than this many days, regardless of where it is stored.
    * Supervisory authorities commonly recommend 6 to 13 months. Default: no expiry beyond the storage lifetime.
@@ -124,10 +158,18 @@ export interface GlobalPrivacyControlOptions {
   signal?: boolean;
 }
 
+/** `"tab"` when the decision was made in another tab of the same site and only applied here. */
+export type ConsentEventOrigin = "local" | "tab";
+
 export type ConsentEvent =
   | { type: "consent_loaded"; state: ConsentState | null }
-  | { type: "consent_updated"; state: ConsentState }
-  | { type: "consent_revoked"; categories: string[] }
+  | { type: "consent_updated"; state: ConsentState; origin: ConsentEventOrigin }
+  | {
+      type: "consent_revoked";
+      categories: string[];
+      purposes: string[];
+      origin: ConsentEventOrigin;
+    }
   | { type: "service_allowed"; serviceId: string }
   | { type: "service_blocked"; serviceId: string };
 
@@ -141,6 +183,8 @@ export interface ConsentSnapshot {
   decision: ConsentState | null;
   /** Effective category consent (includes defaults when no decision exists). */
   categories: Readonly<Record<string, boolean>>;
+  /** Effective purpose consent. */
+  purposes: Readonly<Record<string, boolean>>;
   /** Effective consent per configured service. */
   services: Readonly<Record<string, boolean>>;
   /** `true` when the banner should be shown. */
@@ -154,5 +198,7 @@ export interface ConsentSnapshot {
 
 export interface UpdateOptions {
   services?: Record<string, boolean>;
+  /** Per-purpose overrides on top of the category toggles. */
+  purposes?: Record<string, boolean>;
   source?: ConsentSource;
 }

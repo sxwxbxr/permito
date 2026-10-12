@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import {
   type ConsentConfig,
   ConsentConfigError,
-  type ConsentState,
+  type ConsentStateV1,
   createConsentManager,
   createMemoryStorage,
 } from "../src";
@@ -20,7 +20,7 @@ const baseConfig = (overrides: Partial<ConsentConfig> = {}): ConsentConfig => ({
   ...overrides,
 });
 
-const storedState = (overrides: Partial<ConsentState> = {}): ConsentState => ({
+const storedState = (overrides: Partial<ConsentStateV1> = {}): ConsentStateV1 => ({
   schema: 1,
   version: "2026-10",
   timestamp: "2026-10-01T00:00:00.000Z",
@@ -72,10 +72,11 @@ describe("decisions", () => {
     expect(manager.hasConsent("marketing")).toBe(true);
     expect(manager.hasServiceConsent("youtube")).toBe(true);
     expect(storage.get()).toEqual({
-      schema: 1,
+      schema: 2,
       version: "2026-10",
       timestamp: "2026-10-02T12:00:00.000Z",
       categories: { necessary: true, statistics: true, marketing: true },
+      purposes: { necessary: true, statistics: true, marketing: true },
       services: {},
       source: "banner",
     });

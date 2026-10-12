@@ -3,12 +3,13 @@ title: API status
 description: Which parts of the API are stable, what is not part of the promise, and what is deprecated.
 ---
 
-Permito follows semantic versioning. Since 1.0.0 everything listed under "Stable" is frozen: the runtime exports of every entry point are pinned by a test, and a change to them needs a new major version. See [Migrating to 1.0](../guides/migration.md) and [Versioning and support](versioning.md).
+Permito follows semantic versioning. Since 1.0.0 everything listed under "Stable" is frozen. The runtime exports of every entry point are pinned by a test, and a change to them needs a new major version. 2.0.0 is that new major version: see [Migrating to 2.0](../guides/migration-2.md). Also see [Migrating to 1.0](../guides/migration.md) and [Versioning and support](versioning.md).
 
-## Stable (frozen since 1.0)
+## Stable (frozen since 1.0, extended in 2.0)
 
-- `createConsentManager` and its members: `getSnapshot`, `subscribe`, `on`, `hasConsent`, `hasServiceConsent`, `acceptAll`, `rejectAll`, `update`, `setServiceConsent`, `reset`, `exportState`, `importState`, `destroy`, and the `ConsentConfig` and `ConsentSnapshot` shapes.
-- The stored decision (`ConsentState`, schema 1). Changing it would invalidate stored decisions, so it only changes with a schema bump and a migration.
+- `createConsentManager` and its members: `getSnapshot`, `subscribe`, `on`, `hasConsent`, `hasServiceConsent`, `acceptAll`, `rejectAll`, `update`, `setServiceConsent`, `hasPurposeConsent`, `setPurposeConsent`, `reset`, `exportState`, `importState`, `destroy`, and the `ConsentConfig` and `ConsentSnapshot` shapes.
+- The stored decision (`ConsentState`, schema 2 since 2.0.0; schema 1 is still read and upgraded). Changing it would invalidate stored decisions, so it only changes with a schema bump and a migration.
+- Purposes (`purposes` in the config, `resolvePurposes`) and the webhook (`connectConsentWebhook`, `parseConsentWebhookPayload`, payload format `permito.consent/2`), since 2.0.0. A new field in the payload is a minor release, a changed or removed field a new format number.
 - Consent Mode v2 (`getConsentModeDefaultScript`, `connectGoogleConsentMode`, `toGoogleConsent`).
 - Script and iframe gating (`loadScript`, `activateBlockedElements`, the `data-consent-*` attributes).
 - React: `PermitoProvider`, `ConsentBanner`, `PreferenceCenter`, `ConsentScript`, `ConsentIframe`, `ConsentGate`, `useConsent`, `useHasConsent`, `useHasServiceConsent`.
