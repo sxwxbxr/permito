@@ -5,7 +5,5 @@
     "@permitojs/core": "1.0.0",
     "@permitojs/react": "1.0.0"
   },
-  "changesets": [
-    "v2-purposes-webhook"
-  ]
+  "changesets": ["v2-purposes-webhook"]
 }
