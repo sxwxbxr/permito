@@ -1,4 +1,4 @@
-import type { ConsentState, ConsentStorage } from "./types";
+import type { ConsentState, ConsentStateV1, ConsentStorage } from "./types";
 
 export const DEFAULT_STORAGE_KEY = "permito_consent";
 /** 180 days. Operators should align this with their own retention decision. */
@@ -11,12 +11,12 @@ function isBooleanRecord(value: unknown): value is Record<string, boolean> {
   return Object.values(value).every((v) => typeof v === "boolean");
 }
 
-/** Runtime validation for data read from untrusted storage. */
-export function isConsentState(value: unknown): value is ConsentState {
+/** Runtime validation for data read from untrusted storage (schema 2, or the 1.x schema 1). */
+export function isConsentState(value: unknown): value is ConsentState | ConsentStateV1 {
   if (typeof value !== "object" || value === null) return false;
   const v = value as Record<string, unknown>;
   return (
-    v.schema === 1 &&
+    (v.schema === 1 || (v.schema === 2 && isBooleanRecord(v.purposes))) &&
     typeof v.version === "string" &&
     typeof v.timestamp === "string" &&
     isBooleanRecord(v.categories) &&
@@ -28,11 +28,29 @@ export function isConsentState(value: unknown): value is ConsentState {
   );
 }
 
-export function serializeConsentState(state: ConsentState): string {
+/**
+ * Upgrades a decision stored by Permito 1.x (schema 1) to schema 2. Purposes that are not in the
+ * stored decision follow their category, so a 1.x decision keeps its meaning. Returns schema 2 input unchanged.
+ */
+export function migrateConsentState(
+  state: ConsentState | ConsentStateV1,
+  purposeCategories: Readonly<Record<string, string>> = {},
+): ConsentState {
+  if (state.schema === 2) return state;
+  const purposes: Record<string, boolean> = { ...state.categories };
+  for (const [purposeId, category] of Object.entries(purposeCategories)) {
+    purposes[purposeId] = state.categories[category] === true;
+  }
+  return { ...state, schema: 2, purposes };
+}
+
+export function serializeConsentState(state: ConsentState | ConsentStateV1): string {
   return JSON.stringify(state);
 }
 
-export function parseConsentState(raw: string | null | undefined): ConsentState | null {
+export function parseConsentState(
+  raw: string | null | undefined,
+): ConsentState | ConsentStateV1 | null {
   if (!raw) return null;
   try {
     const parsed: unknown = JSON.parse(raw);
@@ -74,7 +92,7 @@ function readCookie(cookieString: string, name: string): string | null {
 export function readConsentFromCookieHeader(
   cookieHeader: string | null | undefined,
   name: string = DEFAULT_STORAGE_KEY,
-): ConsentState | null {
+): ConsentState | ConsentStateV1 | null {
   if (!cookieHeader) return null;
   return parseConsentState(readCookie(cookieHeader, name));
 }
@@ -166,7 +184,9 @@ export function createSessionStorage(key: string = DEFAULT_STORAGE_KEY): Consent
   return createWebStorage(() => window.sessionStorage, key);
 }
 
-export function createMemoryStorage(initial: ConsentState | null = null): ConsentStorage {
+export function createMemoryStorage(
+  initial: ConsentState | ConsentStateV1 | null = null,
+): ConsentStorage {
   let current = initial;
   return {
     get: () => current,

@@ -14,6 +14,7 @@ export interface Readable<T> {
 export interface ConsentStoreValue extends ConsentSnapshot {
   hasConsent: (category: string) => boolean;
   hasServiceConsent: (serviceId: string) => boolean;
+  hasPurposeConsent: (purposeId: string) => boolean;
 }
 
 function readable<T>(manager: ConsentManager, read: () => T): Readable<T> {
@@ -33,6 +34,7 @@ export function consentStore(manager: ConsentManager): Readable<ConsentStoreValu
       ...snapshot,
       hasConsent: (category) => snapshot.categories[category] === true,
       hasServiceConsent: (serviceId) => snapshot.services[serviceId] === true,
+      hasPurposeConsent: (purposeId) => snapshot.purposes[purposeId] === true,
     };
   });
 }
@@ -45,6 +47,11 @@ export function categoryStore(manager: ConsentManager, category: string): Readab
 /** `true` while consent is granted for the service. */
 export function serviceStore(manager: ConsentManager, serviceId: string): Readable<boolean> {
   return readable(manager, () => manager.getSnapshot().services[serviceId] === true);
+}
+
+/** `true` while consent is granted for the purpose. */
+export function purposeStore(manager: ConsentManager, purposeId: string): Readable<boolean> {
+  return readable(manager, () => manager.getSnapshot().purposes[purposeId] === true);
 }
 
 /** `true` while the banner should be shown. Waits for the stored decision to be read. */

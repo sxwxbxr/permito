@@ -5,6 +5,7 @@ import { usePermitoContext } from "./context";
 export interface UseConsentResult extends ConsentSnapshot {
   hasConsent: (category: string) => boolean;
   hasServiceConsent: (serviceId: string) => boolean;
+  hasPurposeConsent: (purposeId: string) => boolean;
   acceptAll: () => Promise<void>;
   rejectAll: () => Promise<void>;
   updateConsent: (categories: Record<string, boolean>, options?: UpdateOptions) => Promise<void>;
@@ -23,6 +24,7 @@ export function useConsent(): UseConsentResult {
       ...snapshot,
       hasConsent: (category) => snapshot.categories[category] === true,
       hasServiceConsent: (serviceId) => snapshot.services[serviceId] === true,
+      hasPurposeConsent: (purposeId) => snapshot.purposes[purposeId] === true,
       acceptAll: () => manager.acceptAll("api"),
       rejectAll: () => manager.rejectAll("api"),
       updateConsent: (categories, options) => manager.update(categories, options),
@@ -43,6 +45,10 @@ export function useHasConsent(category: string): boolean {
 
 export function useHasServiceConsent(serviceId: string): boolean {
   return usePermitoContext().snapshot.services[serviceId] === true;
+}
+
+export function useHasPurposeConsent(purposeId: string): boolean {
+  return usePermitoContext().snapshot.purposes[purposeId] === true;
 }
 
 export function usePermitoTranslations(): Translations {

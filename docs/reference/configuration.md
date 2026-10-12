@@ -7,6 +7,7 @@ description: All options of ConsentConfig.
 |---|---|---|
 | `consentVersion` | `string` | **Required.** Bump it to ask every visitor again, e.g. after adding a service. |
 | `categories` | `ConsentCategoryDefinition[]` | **Required.** See below. |
+| `purposes` | `ConsentPurposeDefinition[]` | Processing purposes behind the categories. Default: one purpose per category. See [Purposes](#purposes). |
 | `services` | `ConsentService[]` | Services shown in the preference center and addressable by gates. |
 | `policyVersion` | `string` | Optional. A changed value also asks again. |
 | `storage` | `ConsentStorage` | Default: cookie in the browser, memory on the server. |
@@ -30,6 +31,23 @@ interface ConsentCategoryDefinition {
   legalBasis?: string;   // free text for your own documentation, never interpreted
 }
 ```
+
+## Purposes
+
+A purpose is the unit that systems outside the browser act on: the newsletter, ad personalisation, a CRM sync. Each one belongs to a category and has an id that is the same in the browser, in the stored decision and in the [webhook](../guides/revocation-across-systems.md).
+
+```ts
+interface ConsentPurposeDefinition {
+  id: string;            // stable, used by your backend
+  category: string;      // granting or declining the category sets the purpose
+  name?: LocalizedText;
+  description?: LocalizedText;
+}
+```
+
+Without `purposes`, every category is one purpose with the category's id. A visitor decides per category in the banner. Your code can narrow a granted category to fewer purposes with `manager.setPurposeConsent(id, false)`: a purpose is granted while its category is granted and the purpose was not declined. Declining a category declines all its purposes, granting it again grants them all again. The built-in banner shows categories, not purposes.
+
+A service can list the purposes it serves (`purposes: ["newsletter"]`). It runs only while its category and all of these purposes are granted.
 
 ## Services
 
@@ -62,11 +80,12 @@ interface ConsentService {
 
 ```ts
 interface ConsentState {
-  schema: 1;
+  schema: 2;
   version: string;          // consentVersion at the time of the decision
   policyVersion?: string;
   timestamp: string;        // ISO 8601
   categories: Record<string, boolean>;
+  purposes: Record<string, boolean>; // effective consent per purpose
   services: Record<string, boolean>; // only individual overrides
   source: "banner" | "preferences" | "api" | "import" | "embed";
   region?: string;

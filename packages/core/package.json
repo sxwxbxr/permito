@@ -14,6 +14,9 @@
     "url": "https://github.com/sxwxbxr/permito/issues"
   },
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "sideEffects": [
     "*.css",
     "./dist/permito.global.js"

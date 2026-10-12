@@ -2,7 +2,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import {
   type ConsentConfig,
   ConsentConfigError,
-  type ConsentState,
+  type ConsentStateV1,
   createConsentManager,
   createMemoryStorage,
   readGpcFromHeaders,
@@ -18,7 +18,7 @@ const baseConfig = (overrides: Partial<ConsentConfig> = {}): ConsentConfig => ({
   ...overrides,
 });
 
-const storedState = (overrides: Partial<ConsentState> = {}): ConsentState => ({
+const storedState = (overrides: Partial<ConsentStateV1> = {}): ConsentStateV1 => ({
   schema: 1,
   version: "2026-10",
   timestamp: "2026-10-01T00:00:00.000Z",

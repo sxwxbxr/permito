@@ -1,12 +1,20 @@
-import { createCookieStorage, createMemoryStorage, isConsentState } from "./storage";
+import {
+  createCookieStorage,
+  createMemoryStorage,
+  isConsentState,
+  migrateConsentState,
+} from "./storage";
 import type {
   ConsentConfig,
   ConsentEvent,
+  ConsentEventOrigin,
   ConsentEventType,
   ConsentMode,
+  ConsentPurposeDefinition,
   ConsentSnapshot,
   ConsentSource,
   ConsentState,
+  ConsentStateV1,
   ConsentStorage,
   UpdateOptions,
 } from "./types";
@@ -25,10 +33,14 @@ export interface ConsentManager {
   on<T extends ConsentEventType>(type: T, listener: EventListener<T>): () => void;
   hasConsent(category: string): boolean;
   hasServiceConsent(serviceId: string): boolean;
+  /** Whether a purpose is granted: its category is granted and the purpose was not declined. */
+  hasPurposeConsent(purposeId: string): boolean;
   acceptAll(source?: ConsentSource): Promise<void>;
   rejectAll(source?: ConsentSource): Promise<void>;
   /** Change individual categories. Unspecified categories keep their current value. */
   update(categories: Record<string, boolean>, options?: UpdateOptions): Promise<void>;
+  /** Decline or grant a single purpose inside a granted category. */
+  setPurposeConsent(purposeId: string, granted: boolean, source?: ConsentSource): Promise<void>;
   /** Grant or deny a single service, e.g. from an embed placeholder. */
   setServiceConsent(serviceId: string, granted: boolean, source?: ConsentSource): Promise<void>;
   /** Withdraw the decision entirely. The banner is shown again. */
@@ -54,6 +66,18 @@ function validateConfig(config: ConsentConfig): void {
     }
     categoryIds.add(category.id);
   }
+  const purposeIds = new Set<string>();
+  for (const purpose of config.purposes ?? []) {
+    if (purposeIds.has(purpose.id)) {
+      throw new ConsentConfigError(`Duplicate purpose id "${purpose.id}".`);
+    }
+    if (!categoryIds.has(purpose.category)) {
+      throw new ConsentConfigError(
+        `Purpose "${purpose.id}" references unknown category "${purpose.category}".`,
+      );
+    }
+    purposeIds.add(purpose.id);
+  }
   const serviceIds = new Set<string>();
   for (const service of config.services ?? []) {
     if (serviceIds.has(service.id)) {
@@ -63,6 +87,13 @@ function validateConfig(config: ConsentConfig): void {
       throw new ConsentConfigError(
         `Service "${service.id}" references unknown category "${service.category}".`,
       );
+    }
+    for (const purposeId of service.purposes ?? []) {
+      if (!purposeIds.has(purposeId) && !categoryIds.has(purposeId)) {
+        throw new ConsentConfigError(
+          `Service "${service.id}" references unknown purpose "${purposeId}".`,
+        );
+      }
     }
     serviceIds.add(service.id);
   }
@@ -106,6 +137,22 @@ function defaultStorage(): ConsentStorage {
   return typeof window === "undefined" ? createMemoryStorage() : createCookieStorage();
 }
 
+/**
+ * The purposes of a config: the explicit ones plus one implicit purpose (same id) for every
+ * category that has none and whose id is not taken.
+ */
+export function resolvePurposes(
+  config: Pick<ConsentConfig, "categories" | "purposes">,
+): ConsentPurposeDefinition[] {
+  const explicit = config.purposes ?? [];
+  const used = new Set(explicit.map((p) => p.id));
+  const covered = new Set(explicit.map((p) => p.category));
+  const implicit: ConsentPurposeDefinition[] = config.categories
+    .filter((c) => !covered.has(c.id) && !used.has(c.id))
+    .map((c) => ({ id: c.id, category: c.id }));
+  return [...explicit, ...implicit];
+}
+
 export function createConsentManager(config: ConsentConfig): ConsentManager {
   validateConfig(config);
 
@@ -113,6 +160,9 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
   const mode: ConsentMode = resolveMode(config);
   const now = config.now ?? (() => new Date());
   const services = config.services ?? [];
+  const purposeDefs = resolvePurposes(config);
+  const purposeCategory: Record<string, string> = {};
+  for (const purpose of purposeDefs) purposeCategory[purpose.id] = purpose.category;
   const requiredIds = new Set(config.categories.filter((c) => c.required).map((c) => c.id));
   const gpcCategories = resolveGpcCategories(config);
   const listeners = new Set<() => void>();
@@ -131,6 +181,20 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     return result;
   };
 
+  const purposesFor = (
+    categories: Record<string, boolean>,
+    declined: Record<string, boolean> = {},
+  ): Record<string, boolean> => {
+    const result: Record<string, boolean> = {};
+    for (const purpose of purposeDefs) {
+      const category = purpose.category;
+      result[purpose.id] =
+        requiredIds.has(category) ||
+        (categories[category] === true && declined[purpose.id] !== false);
+    }
+    return result;
+  };
+
   const expiresAt = (state: ConsentState): number | null => {
     if (config.maxAgeDays === undefined) return null;
     const decided = Date.parse(state.timestamp);
@@ -138,8 +202,10 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
   };
 
   /** Drops unknown keys, forces required categories and rejects outdated or expired decisions. */
-  const normalize = (state: ConsentState | null): ConsentState | null => {
-    if (!state || !isConsentState(state)) return null;
+  const normalize = (input: ConsentState | ConsentStateV1 | null): ConsentState | null => {
+    if (!input || !isConsentState(input)) return null;
+    // One-time mapping of a 1.x decision: purposes follow their category.
+    const state = migrateConsentState(input, purposeCategory);
     if (state.version !== config.consentVersion) return null;
     if (config.policyVersion && state.policyVersion !== config.policyVersion) return null;
     const expiry = expiresAt(state);
@@ -154,21 +220,30 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
       const value = state.services[service.id];
       if (typeof value === "boolean") serviceOverrides[service.id] = value;
     }
-    return { ...state, categories, services: serviceOverrides };
+    return {
+      ...state,
+      categories,
+      purposes: purposesFor(categories, state.purposes),
+      services: serviceOverrides,
+    };
   };
 
   const computeSnapshot = (): ConsentSnapshot => {
     const categories = decision ? decision.categories : defaultCategories();
+    const purposes = decision ? decision.purposes : purposesFor(categories);
     const effectiveServices: Record<string, boolean> = {};
     for (const service of services) {
       effectiveServices[service.id] =
         service.requiresConsent === false ||
-        (decision?.services[service.id] ?? categories[service.category] === true);
+        (decision?.services[service.id] ??
+          (categories[service.category] === true &&
+            (service.purposes ?? []).every((id) => (purposes[id] ?? categories[id]) === true)));
     }
     return {
       ready,
       decision,
       categories,
+      purposes,
       services: effectiveServices,
       needsConsent: ready && decision === null,
       mode,
@@ -210,12 +285,14 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     categories: Record<string, boolean>,
     serviceOverrides: Record<string, boolean>,
     source: ConsentSource,
+    purposes: Record<string, boolean> = {},
   ): ConsentState => {
     const state: ConsentState = {
-      schema: 1,
+      schema: 2,
       version: config.consentVersion,
       timestamp: now().toISOString(),
       categories,
+      purposes,
       services: serviceOverrides,
       source,
     };
@@ -242,21 +319,29 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     }
   };
 
-  const applyState = (state: ConsentState) => {
+  const applyState = (state: ConsentState, origin: ConsentEventOrigin = "local") => {
     const previous = commit(state);
     const revoked = Object.keys(state.categories).filter(
       (id) => previous.categories[id] === true && state.categories[id] === false,
     );
-    emit({ type: "consent_updated", state });
-    if (revoked.length > 0) emit({ type: "consent_revoked", categories: revoked });
+    const revokedPurposes = Object.keys(state.purposes).filter(
+      (id) => previous.purposes[id] === true && state.purposes[id] === false,
+    );
+    emit({ type: "consent_updated", state, origin });
+    if (revoked.length > 0 || revokedPurposes.length > 0) {
+      emit({ type: "consent_revoked", categories: revoked, purposes: revokedPurposes, origin });
+    }
   };
 
-  const applyReset = () => {
+  const applyReset = (origin: ConsentEventOrigin = "local") => {
     const revoked = Object.keys(snapshot.categories).filter(
       (id) => snapshot.categories[id] === true && !requiredIds.has(id),
     );
+    const revokedPurposes = Object.keys(snapshot.purposes).filter(
+      (id) => snapshot.purposes[id] === true && !requiredIds.has(purposeCategory[id] ?? ""),
+    );
     commit(null);
-    emit({ type: "consent_revoked", categories: revoked });
+    emit({ type: "consent_revoked", categories: revoked, purposes: revokedPurposes, origin });
   };
 
   const persist = async (state: ConsentState) => {
@@ -270,15 +355,15 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
       const data = event.data as { version?: unknown; state?: unknown } | null;
       if (!data || data.version !== config.consentVersion) return;
       if (data.state === null) {
-        if (decision !== null) applyReset();
+        if (decision !== null) applyReset("tab");
         return;
       }
       const next = normalize(isConsentState(data.state) ? data.state : null);
-      if (next && next.timestamp !== decision?.timestamp) applyState(next);
+      if (next && next.timestamp !== decision?.timestamp) applyState(next, "tab");
     };
   }
 
-  const finishLoading = (stored: ConsentState | null) => {
+  const finishLoading = (stored: ConsentState | ConsentStateV1 | null) => {
     commit(normalize(stored));
     emit({ type: "consent_loaded", state: decision });
   };
@@ -293,7 +378,7 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
   } else if (typeof window === "undefined" && !config.storage) {
     readyPromise = Promise.resolve();
   } else {
-    let stored: ConsentState | null | Promise<ConsentState | null>;
+    let stored: ReturnType<ConsentStorage["get"]>;
     try {
       stored = storage.get();
     } catch {
@@ -329,23 +414,29 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
     },
     hasConsent: (category) => snapshot.categories[category] === true,
     hasServiceConsent: (serviceId) => snapshot.services[serviceId] === true,
+    hasPurposeConsent: (purposeId) => snapshot.purposes[purposeId] === true,
     acceptAll(source = "api") {
       const categories: Record<string, boolean> = {};
       for (const category of config.categories) categories[category.id] = true;
-      return persist(buildState(categories, {}, source));
+      return persist(buildState(categories, {}, source, purposesFor(categories)));
     },
     rejectAll(source = "api") {
       const categories: Record<string, boolean> = {};
       for (const category of config.categories) categories[category.id] = false;
-      return persist(buildState(categories, {}, source));
+      return persist(buildState(categories, {}, source, purposesFor(categories)));
     },
     update(changes, options = {}) {
       const current = snapshot.categories;
       const categories = { ...current };
       const overrides = { ...(decision?.services ?? {}) };
+      const purposes = { ...snapshot.purposes };
       for (const [id, value] of Object.entries(changes)) {
         if (!(id in categories)) continue;
         if (categories[id] !== value) {
+          // A category toggle sets every purpose inside it to the same value.
+          for (const purpose of purposeDefs) {
+            if (purpose.category === id) purposes[purpose.id] = value;
+          }
           // A category toggle resets per-service overrides inside that category.
           for (const service of services) {
             if (service.category === id) delete overrides[service.id];
@@ -354,14 +445,40 @@ export function createConsentManager(config: ConsentConfig): ConsentManager {
         categories[id] = value;
       }
       Object.assign(overrides, options.services);
-      return persist(buildState(categories, overrides, options.source ?? "api"));
+      for (const [id, value] of Object.entries(options.purposes ?? {})) {
+        if (id in purposes) purposes[id] = value;
+      }
+      return persist(
+        buildState(
+          categories,
+          overrides,
+          options.source ?? "api",
+          purposesFor(categories, purposes),
+        ),
+      );
     },
     setServiceConsent(serviceId, granted, source = "api") {
       if (!services.some((s) => s.id === serviceId)) {
         return Promise.reject(new ConsentConfigError(`Unknown service "${serviceId}".`));
       }
       const overrides = { ...(decision?.services ?? {}), [serviceId]: granted };
-      return persist(buildState({ ...snapshot.categories }, overrides, source));
+      return persist(
+        buildState({ ...snapshot.categories }, overrides, source, { ...snapshot.purposes }),
+      );
+    },
+    setPurposeConsent(purposeId, granted, source = "api") {
+      if (!(purposeId in purposeCategory)) {
+        return Promise.reject(new ConsentConfigError(`Unknown purpose "${purposeId}".`));
+      }
+      const purposes = { ...snapshot.purposes, [purposeId]: granted };
+      return persist(
+        buildState(
+          { ...snapshot.categories },
+          { ...(decision?.services ?? {}) },
+          source,
+          purposesFor({ ...snapshot.categories }, purposes),
+        ),
+      );
     },
     async reset() {
       applyReset();

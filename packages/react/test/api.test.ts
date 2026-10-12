@@ -26,6 +26,7 @@ describe("public API", () => {
       "createSessionStorage",
       "useConsent",
       "useHasConsent",
+      "useHasPurposeConsent",
       "useHasServiceConsent",
       "useIsAllowed",
       "usePermitoContext",

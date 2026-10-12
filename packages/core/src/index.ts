@@ -40,6 +40,7 @@ export {
   type ConsentManager,
   createConsentManager,
   resolveMode,
+  resolvePurposes,
 } from "./manager";
 export {
   type ActivateOptions,
@@ -60,6 +61,7 @@ export {
   DEFAULT_MAX_AGE_SECONDS,
   DEFAULT_STORAGE_KEY,
   isConsentState,
+  migrateConsentState,
   parseConsentState,
   readConsentFromCookieHeader,
   readGpcFromHeaders,
@@ -67,3 +69,11 @@ export {
 } from "./storage";
 export { serviceFromTemplate, serviceTemplates } from "./templates";
 export * from "./types";
+export {
+  CONSENT_WEBHOOK_FORMAT,
+  type ConnectConsentWebhookOptions,
+  type ConsentWebhookEvent,
+  type ConsentWebhookPayload,
+  connectConsentWebhook,
+  parseConsentWebhookPayload,
+} from "./webhook";

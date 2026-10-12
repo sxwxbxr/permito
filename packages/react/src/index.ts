@@ -33,6 +33,7 @@ export {
   type UseConsentResult,
   useConsent,
   useHasConsent,
+  useHasPurposeConsent,
   useHasServiceConsent,
   useIsAllowed,
   usePermitoTranslations,
