@@ -106,3 +106,14 @@ Full configuration reference and recipes: **[packages.sweber.dev/permito/docs](h
 ## License
 
 MIT © [Seya Weber](https://github.com/sxwxbxr)
+
+<!-- pro-promo -->
+## Permito Pro
+
+Need more than the free package? **Permito Pro** adds:
+
+- Catalog of ready-made, sourced service definitions
+- Cookie table for your privacy policy, generated from the same config
+- Self-hosted consent log that keeps the proof; scanner for cookies and requests before consent; theme templates
+
+Subscriptions from CHF 19 per month, or a one-time lifetime licence. [See what is included](https://packages.sweber.dev/permito?utm_source=npm&utm_medium=readme&utm_campaign=pro)
